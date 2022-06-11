@@ -1,4 +1,4 @@
-package com.game_shop.entity;
+package com.gameshop.entity;
 
 public class Order {
 

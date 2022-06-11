@@ -1,4 +1,4 @@
-package com.game_shop.entity;
+package com.gameshop.entity;
 
 import java.util.List;
 
