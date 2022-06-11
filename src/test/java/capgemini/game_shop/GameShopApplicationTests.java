@@ -1,4 +1,4 @@
-package com.game_shop;
+package capgemini.game_shop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
