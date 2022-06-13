@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 
 /***
- * Entity that stores information about users adress information, and to added it to database
+ * Entity that stores information about users adress information, and to added it to database.
  */
 public class Adress {
 
