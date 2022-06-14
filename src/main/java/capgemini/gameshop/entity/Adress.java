@@ -18,6 +18,7 @@ public class Adress {
     private long id;
     private String country;
     private String address;
+    private String proximity;
     private String state;
     private String city;
     private String zip;
