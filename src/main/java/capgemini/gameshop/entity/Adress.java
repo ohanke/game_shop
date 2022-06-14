@@ -9,8 +9,13 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+
+/***
+ * Entity that stores information about users adress information, and to added it to database.
+ */
 public class Adress {
 
+    private long id;
     private String country;
     private String address;
     private String state;
