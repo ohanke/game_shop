@@ -15,7 +15,7 @@ import lombok.Setter;
  */
 public class Adress {
 
-    private long idd;
+    private long id;
     private String country;
     private String address;
     private String state;
