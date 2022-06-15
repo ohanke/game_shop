@@ -1,16 +1,11 @@
-FROM openjdk:18-alpine
+FROM openjdk:18-jdk-alpine
 
 LABEL Author="Michał Tworuszka, Oskar Hanke, Paweł Manowski"
 
-RUN echo "Game Shop image - capgemini project"
 
-ADD src/main/java/capgemini/gameshop/GameShopApplication.java /app/
-
-WORKDIR /app/
-
-RUN javac GameShopApplication.java
-
-CMD java GameShopApplication
+ARG JAR_FILE=target/artifacts/game_shop_jar/*.jar
+COPY ${JAR_FILE} app.jar
+CMD ["java","-jar","/app.jar"]
 
 
 
