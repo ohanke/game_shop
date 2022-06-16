@@ -2,6 +2,13 @@ package capgemini.gameshop.dto;
 
 import lombok.*;
 
+/**
+ * DTO class for entities of User
+ *
+ * Getters, Setters, full and empty constructor provided by lombok, also one custom constructor
+ * for objects with no id.
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

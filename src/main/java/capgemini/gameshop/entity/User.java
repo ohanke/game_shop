@@ -8,6 +8,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * This Entity is responsible for storing informations about a User.
+ * Informations like: first and last name, email, password , Adress.
+ */
+
 @Setter
 @Getter
 @AllArgsConstructor

@@ -13,7 +13,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.List;
+
+/**
+ * This Entity is responsible for storing informations about the Product.
+ * Informations like: Products name, its Category, description and price
+ */
 
 @Setter
 @Getter
