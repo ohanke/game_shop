@@ -6,6 +6,13 @@ import capgemini.gameshop.entity.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ *  Maps entities of user to DTO type
+ *
+ *  First method takes in one entity and returns one DTO
+ *
+ *  Second method takes in a List of entities and returns a List of DTO's
+ */
 public class UserToUserDtoMapper {
     public static UserDto map(User entity){
         return new UserDto(

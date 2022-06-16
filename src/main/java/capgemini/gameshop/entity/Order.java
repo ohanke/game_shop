@@ -1,12 +1,17 @@
 package capgemini.gameshop.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+/**
+ * This entity is responsible for storing informations about a Order.
+ * Informations like: id of User which owns the Order, date of Order creation,
+ * total value of all the products in this Order, current Status of the Order
+ */
 
 @Setter
 @Getter
