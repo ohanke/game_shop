@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * Repository for User. Access to database via JpaRepository.
+ * Repository for User entities. Access to database via JpaRepository.
  *
  * findUserById returns an Optional of User for the given id
  */

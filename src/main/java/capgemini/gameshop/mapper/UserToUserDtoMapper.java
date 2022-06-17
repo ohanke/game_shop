@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *  Maps entities of user to DTO type
+ *  Maps entities of User to DTO type
  *
  *  First method takes in one entity and returns one DTO
  *
