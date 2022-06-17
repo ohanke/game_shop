@@ -9,7 +9,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+/**
+ *  Service for UserRepository.
+ *
+ *  Calls UserRepository to get required Entities of User.
+ *  Calls the UserToUserDtoMapper to map the Entities into DTO type.
+ *  Returns DTO's of User
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
