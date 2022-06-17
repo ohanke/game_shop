@@ -17,8 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Cart {
 
-    private long id; //delete maybe?
-    private User user; //delete maybe?
+    private Long id;
+    private User user; //change to Order maybe?
     private List<Product> listProduct;
 
 }
