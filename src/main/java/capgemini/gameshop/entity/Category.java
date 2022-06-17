@@ -8,6 +8,8 @@ public enum Category {
 
     HORROR,
     ACTION,
-    STORY
+    STORY,
+    SCIFI,
+    RACES
 
 }

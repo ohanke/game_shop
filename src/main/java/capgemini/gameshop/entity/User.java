@@ -23,21 +23,25 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
-    //TODO make relation user - adress
-    @Column(name = "adress_id")
-    private Long adressId;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Adress> adressList;
 
-//    private List<Order> orderList;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orderList;
 
 }

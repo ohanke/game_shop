@@ -1,9 +1,12 @@
 package capgemini.gameshop.dto;
 
+import capgemini.gameshop.entity.Attribute;
 import capgemini.gameshop.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 /**
  * DTO class for entities of Product
@@ -19,16 +22,15 @@ public class ProductDto {
     private Long id;
     private String name;
     private Category category;
-    private String description;
-//    private List<Attribute> attributes;
+    private Set<Attribute> attributes;
     private Double priceNett;
     private Double priceGross;
 
-    public ProductDto(String name, Category category, String description, Double priceNett, Double priceGross) {
+    public ProductDto(String name, Category category, Set<Attribute> attributes, Double priceNett, Double priceGross) {
         this.id = null;
         this.name = name;
         this.category = category;
-        this.description = description;
+        this.attributes = attributes;
         this.priceNett = priceNett;
         this.priceGross = priceGross;
     }

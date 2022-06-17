@@ -17,14 +17,15 @@ import lombok.NoArgsConstructor;
 @Getter
 public class OrderDto {
     private Long id;
-    private Long userId;
-    private String date; //change later for LocalDate or smth like that
+    //private Long userId;
+
+    //TODO change later to LocalDateTime
+    private String date;
     private double totalValue;
     private OrderStatus orderStatus;
 
-    public OrderDto(Long userId, String date, double totalValue, OrderStatus orderStatus) {
+    public OrderDto(String date, double totalValue, OrderStatus orderStatus) {
         this.id = null;
-        this.userId = userId;
         this.date = date;
         this.totalValue = totalValue;
         this.orderStatus = orderStatus;
