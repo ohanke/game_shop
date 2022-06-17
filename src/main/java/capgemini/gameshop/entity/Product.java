@@ -30,14 +30,16 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @ManyToMany(mappedBy = "productList")
+    private List<Order> orderList;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private Category category;
 
-    //private String description;
-
     @ElementCollection(targetClass = Attribute.class)
-    @CollectionTable(name = "product_attribute", joinColumns = @JoinColumn(name = "product_id"))
+    @CollectionTable(name = "product_attribute",
+            joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "attributes")
     private Set<Attribute> attributes;
