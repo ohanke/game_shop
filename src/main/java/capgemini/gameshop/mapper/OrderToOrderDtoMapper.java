@@ -17,7 +17,6 @@ public class OrderToOrderDtoMapper {
     public static OrderDto map(Order entity){
         return new OrderDto(
                 entity.getId(),
-                entity.getUserId(),
                 entity.getDate(),
                 entity.getTotalValue(),
                 entity.getOrderStatus()

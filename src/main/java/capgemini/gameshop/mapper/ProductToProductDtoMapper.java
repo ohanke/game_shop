@@ -19,7 +19,7 @@ public class ProductToProductDtoMapper {
                 entity.getId(),
                 entity.getName(),
                 entity.getCategory(),
-                entity.getDescription(),
+                entity.getAttributes(),
                 entity.getPriceNett(),
                 entity.getPriceGross()
         );

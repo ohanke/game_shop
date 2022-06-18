@@ -5,18 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 /**
- * This Entity is responsible for storing informations about the Product.
- * Informations like: Products name, its Category, description and price
+ * This Entity is responsible for storing information about the Product.
+ * Information like: Products name, its Category, description and price
  */
 
 @Setter
@@ -29,19 +24,30 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long id;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @ManyToMany(mappedBy = "productList")
+    private List<Order> orderList;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false)
     private Category category;
 
-    private String description;
-//    private List<Attribute> attributes;
+    @ElementCollection(targetClass = Attribute.class)
+    @CollectionTable(name = "product_attribute",
+            joinColumns = @JoinColumn(name = "product_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "attributes")
+    private Set<Attribute> attributes;
 
-    @Column(name = "price_nett")
+    @Column(name = "price_nett", nullable = false, scale = 2)
     private Double priceNett;
 
-    @Column(name = "price_gross")
+    @Column(name = "price_gross", nullable = false, scale = 2)
     private Double priceGross;
 
 }
