@@ -1,3 +1,4 @@
+
 INSERT INTO users(user_id, first_name, last_name, email, password)
 VALUES ( 1, 'Marian', 'Kowalski', 'marian@kowalski.com', 'password');
 INSERT INTO users(user_id, first_name, last_name, email, password)
