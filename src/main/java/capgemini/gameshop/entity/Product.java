@@ -32,7 +32,7 @@ public class Product {
     private String name;
 
     @ManyToMany(mappedBy = "products")
-    private Set<Order> orders;
+    private Set<Order> orders  = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
@@ -43,7 +43,7 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "attributes")
-    private Set<Attribute> attributes = new HashSet<>();
+    private List<Attribute> attributes;
 
     @Column(name = "price_nett", nullable = false, scale = 2)
     private Double priceNett;
