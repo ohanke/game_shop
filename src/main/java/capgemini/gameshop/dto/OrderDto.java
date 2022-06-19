@@ -19,7 +19,7 @@ public class OrderDto {
     private Long id;
     //private Long userId;
 
-    //TODO change later to LocalDateTime
+    //TODO change later to LocalDateTime and add products (Set<>)
     private String date;
     private double totalValue;
     private OrderStatus orderStatus;
