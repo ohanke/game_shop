@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +43,7 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "attributes")
-    private Set<Attribute> attributes;
+    private Set<Attribute> attributes = new HashSet<>();
 
     @Column(name = "price_nett", nullable = false, scale = 2)
     private Double priceNett;
