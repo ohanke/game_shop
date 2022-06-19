@@ -43,7 +43,7 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "attributes")
-    private List<Attribute> attributes;
+    private Set<Attribute> attributes;
 
     @Column(name = "price_nett", nullable = false, scale = 2)
     private Double priceNett;
