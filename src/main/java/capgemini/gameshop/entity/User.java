@@ -39,13 +39,11 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            cascade = CascadeType.ALL)
     private List<Adress> adressList;
 
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            cascade = CascadeType.ALL)
     private List<Order> orderList;
 
 }

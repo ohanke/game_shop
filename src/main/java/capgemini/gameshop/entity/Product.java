@@ -30,8 +30,8 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "productList")
-    private List<Order> orderList;
+    @ManyToMany(mappedBy = "products")
+    private Set<Order> orders;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
