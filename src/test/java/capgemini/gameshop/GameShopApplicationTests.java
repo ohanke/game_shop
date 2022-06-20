@@ -1,4 +1,4 @@
-package capgemini.game_shop;
+package capgemini.gameshop;
 
 import capgemini.gameshop.GameShopApplication;
 import org.junit.jupiter.api.Test;
