@@ -1,6 +1,7 @@
 package capgemini.gameshop.controller.rest;
 
 import capgemini.gameshop.service.ProductSerive;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,7 +24,8 @@ class ProductRestControllerUnitTest {
     ProductSerive productSerive;
 
     @Test
-    void getProducts() throws Exception{
+    @DisplayName("Test if List of Products on the url has 200 status and type Json")
+    void get_JsonProductList_succes() throws Exception{
         mockMvc.perform(get("/api/products"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
