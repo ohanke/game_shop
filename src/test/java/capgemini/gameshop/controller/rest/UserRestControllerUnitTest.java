@@ -24,7 +24,8 @@ class UserRestControllerUnitTest {
     UserService userService;
 
     @Test
-    public void getUsers() throws Exception{
+    @DisplayName("Test if List of Users on the url has 200 status and type Json")
+    public void get_JsonUserList_succes() throws Exception{
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

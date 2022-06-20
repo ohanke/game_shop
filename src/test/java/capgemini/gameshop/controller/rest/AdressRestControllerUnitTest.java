@@ -1,6 +1,7 @@
 package capgemini.gameshop.controller.rest;
 
 import capgemini.gameshop.service.AdressService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,7 +25,8 @@ class AdressRestControllerUnitTest {
     AdressService adressService;
 
     @Test
-    void getAdresses() throws Exception {
+    @DisplayName("Test if List of Adresses on the url has 200 status and type Json")
+    void get_JsonAdressesList_succes() throws Exception {
         mockMvc.perform(get("/api/adresses"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
