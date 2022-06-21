@@ -2,7 +2,6 @@ package capgemini.gameshop.service;
 
 import capgemini.gameshop.dto.ProductDto;
 import capgemini.gameshop.entity.Product;
-import capgemini.gameshop.mapper.ProductToProductDtoMapper;
 import capgemini.gameshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

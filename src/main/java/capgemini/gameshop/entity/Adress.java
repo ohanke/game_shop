@@ -35,7 +35,7 @@ public class Adress {
     private String country;
 
     @Column(name =" street", nullable = false)
-    private String address;
+    private String street;
 
     @Column(name =" state")
     private String state;

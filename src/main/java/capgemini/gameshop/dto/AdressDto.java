@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class AdressDto {
     private Long id;
     private String country;
-    private String address;
+    private String street;
     private String state;
     private String city;
     private String zip;
@@ -25,7 +25,7 @@ public class AdressDto {
     public AdressDto(String country, String address, String state, String city, String zip) {
         this.id = null;
         this.country = country;
-        this.address = address;
+        this.street = address;
         this.state = state;
         this.city = city;
         this.zip = zip;
