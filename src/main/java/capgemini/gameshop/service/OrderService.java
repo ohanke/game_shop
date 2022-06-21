@@ -2,7 +2,6 @@ package capgemini.gameshop.service;
 
 import capgemini.gameshop.dto.OrderDto;
 import capgemini.gameshop.entity.Order;
-import capgemini.gameshop.mapper.OrderToOrderDtoMapper;
 import capgemini.gameshop.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,6 @@ package capgemini.gameshop.service;
 
 import capgemini.gameshop.dto.UserDto;
 import capgemini.gameshop.entity.User;
-import capgemini.gameshop.mapper.UserToUserDtoMapper;
 import capgemini.gameshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
