@@ -20,12 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "adress")
-public class Adress {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "adress_id")
-    private Long id;
+public class Adress extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
@@ -45,11 +40,5 @@ public class Adress {
 
     @Column(name =" zip_code", nullable = false)
     private String zip;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime lastModifiedAt;
 
 }

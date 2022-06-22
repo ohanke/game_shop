@@ -3,6 +3,7 @@ package capgemini.gameshop.repository;
 import capgemini.gameshop.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -10,5 +11,5 @@ import java.util.Optional;
  */
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    Optional<Product> findAllByIdLessThan (Long id);
+    List<Product> findAllByIdLessThan (Long id);
 }

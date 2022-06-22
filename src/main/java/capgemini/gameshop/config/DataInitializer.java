@@ -2,6 +2,7 @@ package capgemini.gameshop.config;
 
 
 import capgemini.gameshop.entity.*;
+import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.repository.AdressRepository;
 import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
@@ -19,12 +20,11 @@ import static capgemini.gameshop.entity.Category.*;
 @RequiredArgsConstructor
 public class DataInitializer {
 
-    private final static double VAT = 1.23d; //nett to gross parameter
+    private final static double VAT = 1.23d; //nett to gross parameter (based on polish tax value of 23%)
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final AdressRepository adressRepository;
     private final UserRepository userRepository;
-    private Set<Attribute> attributes;
 
     /**
      * Initializing method.
@@ -32,6 +32,7 @@ public class DataInitializer {
     public void initialize() {
 
         //creating products and saving them to repository
+        Set<Attribute> attributes;
 
         attributes = Set.of(STRONG_LANGUAGE,VIOLENCE, ADULT_ONLY);
         createProduct("Dead Space", ACTION, 100d,attributes);
@@ -65,7 +66,6 @@ public class DataInitializer {
         createAdress("kdudek@gmail.com", "Polska",  "'Królewska 11a",  "Małopolskie",  "Kraków", "31-923");
         createAdress("kdudek@gmail.com", "Polska",  "Wszystkich Świętych 3",  "Małopolskie",  "Kraków", "31-004");
 
-        //TODO add creating orders
         //creating addresses and saving them to repository
 
         createOrder("marian@kowalski.com",OrderStatus.RECIEVED, 1L); //product_id i te max id tha will be added to products
@@ -79,10 +79,10 @@ public class DataInitializer {
 
     /**
      * Method to create product object and save it in product repository
-     * @param name
-     * @param category
-     * @param priceNett
-     * @param attributes
+     * @param name - name of product
+     * @param category - enum category of game (product)
+     * @param priceNett - nett value of product (gross is calculated by multiplying nett * tax value (VAT)
+     * @param attributes - set of enum values informing buyer what they can expect of the product
      */
     public void createProduct(String name, Category category, double priceNett, Set<Attribute> attributes) {
         double priceGross = priceNett * VAT;
@@ -97,15 +97,14 @@ public class DataInitializer {
 
     /**
      * Method to create order object and save it in order repository
-     * @param mail
-     * @param orderStatus
-     * @param productId
+     * @param email - this field is unique at user so this method searching user by it in repository
+     * @param orderStatus - enum field that informs if order is completed
+     * @param maxProductId - this param is upper limit for list od products to add to order
      */
-    public void createOrder(String mail,  OrderStatus orderStatus, long productId){
+    public void createOrder(String email,  OrderStatus orderStatus, long maxProductId){
         Order order = new Order();
-        Set<Product> products = new HashSet<>();
-        products.add(productRepository.findAllByIdLessThan(productId).orElseThrow(NoSuchFieldError::new));
-        User user = userRepository.findUserByEmail(mail).orElseThrow(NoSuchFieldError::new);
+        Set<Product> products = new HashSet<>(productRepository.findAllByIdLessThan(maxProductId));
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
         order.setUser(user);
         double totalValue = products.stream()
                             .mapToDouble(Product::getPriceGross)
@@ -120,10 +119,10 @@ public class DataInitializer {
 
     /**
      * Method to create user object and save it in user repository
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param password
+     * @param firstName - first name of user
+     * @param lastName - surname of user
+     * @param email - unique user email adress
+     * @param password - user's login password
      */
     public void createUser(String firstName, String lastName, String email, String password){
         User user = new User();
@@ -136,6 +135,7 @@ public class DataInitializer {
 
     /**
      * Method to create adress object and save it in adress repository
+     * @param email - this field is unique at user so this method searching user by it in repository
      * @param country
      * @param street
      * @param state
@@ -144,7 +144,7 @@ public class DataInitializer {
      */
     public void createAdress(String email, String country, String street, String state, String city, String zipCode){
         Adress adress = new Adress();
-        User user = userRepository.findUserByEmail(email).orElseThrow(NoSuchFieldError::new);
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
         adress.setUser(user);
         adress.setCountry(country);
         adress.setStreet(street);

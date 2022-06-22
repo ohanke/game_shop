@@ -23,12 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "product")
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private Long id;
+public class Product extends BaseEntity{
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -53,10 +48,5 @@ public class Product {
     @Column(name = "price_gross", nullable = false, scale = 2)
     private Double priceGross;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime lastModifiedAt;
 
 }

@@ -22,12 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long id;
+public class User extends BaseEntity{
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -43,16 +38,10 @@ public class User {
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL)
-    private List<Adress> adressList;
+    private List<Adress> adresses;
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL)
-    private List<Order> orderList;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime lastModifiedAt;
+    private List<Order> orders;
 
 }
