@@ -6,6 +6,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Base Entity abstract class to keep Common fields and to be inherited by Entity Classes
+ */
 @MappedSuperclass
 public abstract class BaseEntity {
 
