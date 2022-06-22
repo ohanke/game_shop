@@ -25,14 +25,9 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
-    private Long id;
-
-    @ManyToOne
+       @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
@@ -42,12 +37,6 @@ public class Order {
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime lastModifiedAt;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "order_product",
