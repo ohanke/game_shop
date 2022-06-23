@@ -1,5 +1,6 @@
 package capgemini.gameshop.dto;
 
+import com.github.dozermapper.core.Mapping;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class AdressDto {
+    @Mapping("id")
     private Long id;
     private String country;
     private String street;

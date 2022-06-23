@@ -7,6 +7,7 @@ import capgemini.gameshop.repository.ProductRepository;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 public class ProductSerive {
     private final ProductRepository productRepository;
 
-    private final Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+    private final Mapper mapper;
 
     public List<ProductDto> getAllProducts(){
         return productRepository.findAll().stream().map(product -> mapper.map(product, ProductDto.class)).collect((Collectors.toList()));

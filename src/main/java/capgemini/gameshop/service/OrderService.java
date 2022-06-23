@@ -6,6 +6,7 @@ import capgemini.gameshop.repository.OrderRepository;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+    private final Mapper mapper;
 
     public List<OrderDto> getAllOrders(){
         return orderRepository.findAll().stream().map(order -> mapper.map(order, OrderDto.class)).collect(Collectors.toList());

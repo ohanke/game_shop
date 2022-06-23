@@ -8,6 +8,7 @@ import com.github.dozermapper.core.DozerBeanMapper;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +19,14 @@ import java.util.stream.Collectors;
  *
  *  Calls UserRepository to get required Entities of User.
  *  Calls the UserToUserDtoMapper to map the Entities into DTO type.
- *  Returns DTO's of User
+ *  Returns DTO's of  User
  */
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private final Mapper mapper;
     private final UserRepository userRepository;
-    private final Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream().map(user -> mapper.map(user, UserDto.class)).collect((Collectors.toList()));
