@@ -1,6 +1,13 @@
 package capgemini.gameshop.dto;
 
+import capgemini.gameshop.entity.Adress;
+import capgemini.gameshop.entity.Order;
 import lombok.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  * DTO class for entities of User
@@ -18,6 +25,9 @@ public class UserDto {
     private String lastName;
     private String email;
     private String password;
+
+    private List<Adress> adresses;
+    private List<Order> orders;
 
     public UserDto(String firstName, String lastName, String email, String password) {
         this.id = null;
