@@ -8,6 +8,7 @@ import com.github.dozermapper.core.DozerBeanMapper;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+    @Autowired
+    private Mapper mapper;
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream().map(user -> mapper.map(user, UserDto.class)).collect((Collectors.toList()));
