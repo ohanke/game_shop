@@ -2,11 +2,16 @@ package capgemini.gameshop.service;
 
 import capgemini.gameshop.dto.UserDto;
 import capgemini.gameshop.entity.User;
+import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.repository.UserRepository;
+import com.github.dozermapper.core.DozerBeanMapper;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *  Service for UserRepository.
@@ -19,15 +24,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 
     public List<UserDto> getAllUsers() {
-        return UserToUserDtoMapper.map(userRepository.findAll());
+        return userRepository.findAll().stream().map(user -> mapper.map(user, UserDto.class)).collect((Collectors.toList()));
     }
-    //TODO change return type to UserDto
-    public User saveUser(User user){
-        return userRepository.save(user);
+    public UserDto saveUser(User user){
+        return mapper.map(userRepository.save(user), UserDto.class);
     }
     public UserDto getUserById(Long id){
-        return UserToUserDtoMapper.map(userRepository.findUserById(id).orElse(null));
+        User user = userRepository.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+        return mapper.map(user, UserDto.class);
     }
 }
