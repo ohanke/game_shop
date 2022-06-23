@@ -23,8 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    @Autowired
-    private Mapper mapper;
+    private final Mapper mapper;
 
     public List<OrderDto> getAllOrders(){
         return orderRepository.findAll().stream().map(order -> mapper.map(order, OrderDto.class)).collect(Collectors.toList());

@@ -25,8 +25,7 @@ import java.util.stream.Collectors;
 public class ProductSerive {
     private final ProductRepository productRepository;
 
-    @Autowired
-    private Mapper mapper;
+    private final Mapper mapper;
 
     public List<ProductDto> getAllProducts(){
         return productRepository.findAll().stream().map(product -> mapper.map(product, ProductDto.class)).collect((Collectors.toList()));

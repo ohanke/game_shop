@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  *
  *  Calls UserRepository to get required Entities of User.
  *  Calls the UserToUserDtoMapper to map the Entities into DTO type.
- *  Returns DTO's of User
+ *  Returns DTO's of  User
  */
 @Service
 @RequiredArgsConstructor

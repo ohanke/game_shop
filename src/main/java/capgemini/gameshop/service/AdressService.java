@@ -23,8 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdressService {
     private final AdressRepository adressRepository;
-    @Autowired
-    private Mapper mapper;
+    private final Mapper mapper;
 
     //TODO handle possible null return
     public List<AdressDto> getAllAdresses(){
