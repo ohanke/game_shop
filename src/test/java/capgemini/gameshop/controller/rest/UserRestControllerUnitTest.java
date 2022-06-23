@@ -1,5 +1,6 @@
 package capgemini.gameshop.controller.rest;
 
+import capgemini.gameshop.config.DataInitializer;
 import capgemini.gameshop.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,9 @@ class UserRestControllerUnitTest {
     private MockMvc mockMvc;
 
     @MockBean
+    DataInitializer dataInitializer;
+
+    @MockBean
     UserService userService;
 
     @Test
@@ -31,7 +35,7 @@ class UserRestControllerUnitTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[]"));
 
-        verify(userService).getAllUsers();
+        verify(userService).findAll();
     }
 
 }

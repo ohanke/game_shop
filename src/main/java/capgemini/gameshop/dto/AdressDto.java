@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+
 /**
  * DTO class for entities of Adress
  *
@@ -18,10 +20,19 @@ import lombok.NoArgsConstructor;
 public class AdressDto {
     @Mapping("id")
     private Long id;
+    @Mapping(" country")
     private String country;
+
+    @Mapping(" street")
     private String street;
+
+    @Mapping(" state")
     private String state;
+
+    @Mapping("city")
     private String city;
+
+    @Mapping("zip_code")
     private String zip;
 
     public AdressDto(String country, String address, String state, String city, String zip) {

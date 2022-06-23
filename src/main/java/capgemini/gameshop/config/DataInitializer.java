@@ -104,7 +104,7 @@ public class DataInitializer {
     public void createOrder(String email,  OrderStatus orderStatus, long maxProductId){
         Order order = new Order();
         Set<Product> products = new HashSet<>(productRepository.findAllByIdLessThan(maxProductId));
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
         order.setUser(user);
         double totalValue = products.stream()
                             .mapToDouble(Product::getPriceGross)
@@ -144,7 +144,7 @@ public class DataInitializer {
      */
     public void createAdress(String email, String country, String street, String state, String city, String zipCode){
         Adress adress = new Adress();
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
         adress.setUser(user);
         adress.setCountry(country);
         adress.setStreet(street);
