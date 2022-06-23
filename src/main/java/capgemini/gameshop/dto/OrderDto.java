@@ -22,14 +22,14 @@ import java.util.Set;
 @Getter
 public class OrderDto {
     private Long id;
-    //private Long userId;
-
-    //TODO change later to LocalDateTime and add products (Set<>)
-    private LocalDateTime createdAt;
+    private Long userId;
     private double totalValue;
     private OrderStatus orderStatus;
-
     private Set<Product> products = new HashSet<>();
+    private LocalDateTime createdAt;
+
+
+
 
     public OrderDto(String date, double totalValue, OrderStatus orderStatus, Set<Product> products) {
         this.id = null;
