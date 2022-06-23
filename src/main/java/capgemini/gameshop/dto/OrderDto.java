@@ -22,13 +22,13 @@ import java.util.Set;
 @Getter
 public class OrderDto {
     private Long id;
+
     private Long user;
     private double totalValue;
     private OrderStatus orderStatus;
     private Set<Product> products = new HashSet<>();
+
     private LocalDateTime createdAt;
-
-
 
 
     public OrderDto(String date, double totalValue, OrderStatus orderStatus, Set<Product> products) {
