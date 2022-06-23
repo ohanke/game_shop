@@ -1,12 +1,9 @@
 package capgemini.gameshop.service;
 
 import capgemini.gameshop.dto.OrderDto;
-import capgemini.gameshop.entity.Order;
 import capgemini.gameshop.repository.OrderRepository;
-import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +22,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final Mapper mapper;
 
-    public List<OrderDto> getAllOrders(){
+    public List<OrderDto> findAll(){
         return orderRepository.findAll().stream().map(order -> mapper.map(order, OrderDto.class)).collect(Collectors.toList());
     }
 }

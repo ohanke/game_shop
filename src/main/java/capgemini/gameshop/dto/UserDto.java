@@ -29,9 +29,11 @@ public class UserDto {
     private String email;
     @Mapping("password")
     private String password;
+
     @Mapping("adresses")
     @JsonIgnore
     private List<Adress> adresses;
+
     @Mapping("orders")
     @JsonIgnore
     private List<Order> orders;

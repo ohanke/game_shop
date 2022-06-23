@@ -3,7 +3,6 @@ package capgemini.gameshop.controller.rest;
 import capgemini.gameshop.dto.UserDto;
 import capgemini.gameshop.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +19,6 @@ public class UserRestController {
 
     @GetMapping("/users")
     public List<UserDto> getUsers(){
-        return userService.getAllUsers();
+        return userService.findAll();
     }
 }

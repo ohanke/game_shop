@@ -1,6 +1,7 @@
 package capgemini.gameshop.controller.rest;
 
-import capgemini.gameshop.service.ProductSerive;
+import capgemini.gameshop.config.DataInitializer;
+import capgemini.gameshop.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ class ProductRestControllerUnitTest {
     private MockMvc mockMvc;
 
     @MockBean
-    ProductSerive productSerive;
+    DataInitializer dataInitializer;
+
+    @MockBean
+    ProductService productService;
 
     @Test
     @DisplayName("Test if List of Products on the url has 200 status and type Json")
@@ -31,6 +35,6 @@ class ProductRestControllerUnitTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[]"));
 
-        verify(productSerive).getAllProducts();
+        verify(productService).findAll();
     }
 }

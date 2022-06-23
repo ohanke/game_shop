@@ -18,6 +18,6 @@ public class OrderRestController {
 
     @GetMapping("/orders")
     public List<OrderDto> getOrders(){
-        return orderService.getAllOrders();
+        return orderService.findAll();
     }
 }

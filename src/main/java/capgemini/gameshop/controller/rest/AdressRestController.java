@@ -18,6 +18,6 @@ public class AdressRestController {
 
     @GetMapping("/adresses")
     public List<AdressDto> getAdresses(){
-        return adressService.getAllAdresses();
+        return adressService.findAll();
     }
 }
