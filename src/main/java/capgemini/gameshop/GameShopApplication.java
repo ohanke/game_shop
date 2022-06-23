@@ -16,6 +16,7 @@ public class GameShopApplication {
 		SpringApplication.run(GameShopApplication.class, args);
 	}
 
+
 	@Component
 	@RequiredArgsConstructor
 	public class AppInitializer implements ApplicationRunner {
