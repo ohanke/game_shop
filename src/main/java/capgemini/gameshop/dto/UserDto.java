@@ -2,11 +2,9 @@ package capgemini.gameshop.dto;
 
 import capgemini.gameshop.entity.Adress;
 import capgemini.gameshop.entity.Order;
+import com.github.dozermapper.core.Mapping;
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
 import java.util.List;
 
 /**
@@ -20,14 +18,19 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class UserDto {
+    @Mapping("id")
     private Long id;
+    @Mapping("firstName")
     private String firstName;
+    @Mapping("lastName")
     private String lastName;
+    @Mapping("email")
     private String email;
+    @Mapping("password")
     private String password;
-
+    @Mapping("adresses")
     private List<Adress> adresses;
-
+    @Mapping("orders")
     private List<Order> orders;
 
     public UserDto(String firstName, String lastName, String email, String password) {
