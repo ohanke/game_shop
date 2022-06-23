@@ -5,6 +5,7 @@ import capgemini.gameshop.repository.AdressRepository;
 import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
 import capgemini.gameshop.repository.UserRepository;
+import capgemini.gameshop.service.UserService;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ public class PersistenceConfig {
     public Mapper mapper() {
         return DozerBeanMapperBuilder.buildDefault();
     }
+
 
 
 }

@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private final Mapper mapper;
     private final UserRepository userRepository;
-    @Autowired
-    private Mapper mapper;
+
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream().map(user -> mapper.map(user, UserDto.class)).collect((Collectors.toList()));
