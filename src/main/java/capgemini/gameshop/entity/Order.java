@@ -27,7 +27,7 @@ import java.util.Set;
 @Table(name = "orders")
 public class Order extends BaseEntity{
 
-       @ManyToOne
+    @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 

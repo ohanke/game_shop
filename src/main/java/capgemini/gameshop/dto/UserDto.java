@@ -2,6 +2,7 @@ package capgemini.gameshop.dto;
 
 import capgemini.gameshop.entity.Adress;
 import capgemini.gameshop.entity.Order;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.dozermapper.core.Mapping;
 import lombok.*;
 
@@ -29,8 +30,10 @@ public class UserDto {
     @Mapping("password")
     private String password;
     @Mapping("adresses")
+    @JsonIgnore
     private List<Adress> adresses;
     @Mapping("orders")
+    @JsonIgnore
     private List<Order> orders;
 
     public UserDto(String firstName, String lastName, String email, String password) {
