@@ -3,7 +3,6 @@ package capgemini.gameshop.dto;
 import capgemini.gameshop.entity.Adress;
 import capgemini.gameshop.entity.Order;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.dozermapper.core.Mapping;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -20,22 +19,23 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class UserDto {
-    @Mapping("id")
+
     private Long id;
-    @Mapping("firstName")
+
     private String firstName;
-    @Mapping("lastName")
+
     private String lastName;
-    @Mapping("email")
+
     private String email;
-    @Mapping("password")
+
     private String password;
 
-    @Mapping("adresses")
+    @JsonIgnore
     private List<AdressDto> adresses = new ArrayList<>();
 
-    @Mapping("orders")
+    @JsonIgnore
     private List<OrderDto> orders = new ArrayList<>();
 
     public UserDto(String firstName, String lastName, String email, String password) {

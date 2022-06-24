@@ -22,26 +22,27 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+
 public class User extends BaseEntity{
 
-    @Column(name = "first_name", nullable = false)
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.PERSIST)
     private List<Adress> adresses;
 
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.PERSIST)
     private List<Order> orders;
 
 }

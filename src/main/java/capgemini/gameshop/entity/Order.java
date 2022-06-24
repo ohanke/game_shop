@@ -31,10 +31,10 @@ public class Order extends BaseEntity{
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
-    @Column(name = "total_value", nullable = false, scale = 2)
+   // @Column(name = "total_value", nullable = false, scale = 2)
     private double totalValue;
 
-    @Column(name = "order_status")
+   // @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 

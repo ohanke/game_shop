@@ -2,11 +2,12 @@ package capgemini.gameshop.dto;
 
 import capgemini.gameshop.entity.Attribute;
 import capgemini.gameshop.entity.Category;
-import capgemini.gameshop.entity.Order;
-import com.github.dozermapper.core.Mapping;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -22,26 +23,22 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class ProductDto {
-    @Mapping("id")
+
     private Long id;
 
-    @Mapping("name")
     private String name;
 
-    @Mapping("category")
     private Category category;
 
-    @Mapping("attributes")
     private Set<Attribute> attributes;
 
-    @Mapping("price_nett")
     private Double priceNett;
 
-    @Mapping("price_gross")
     private Double priceGross;
 
-    @Mapping("orders")
+    @JsonIgnore
     private Set<OrderDto> orders  = new HashSet<>();
 
     public ProductDto(String name, Category category, Set<Attribute> attributes, Double priceNett, Double priceGross) {
