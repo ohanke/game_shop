@@ -23,13 +23,13 @@ public class UserRestController {
         return userService.findAll();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public UserDto findOne(@PathVariable long id) {
         return userService.FindById(id);
     }
 
     //TODO = finish this one
-//    @GetMapping("/user/{email}")
+//    @GetMapping("/users/{email}")
 //    public UserDto findOne(@PathVariable String email) {
 //        return userService.FindByEmail(email);
 //    }
