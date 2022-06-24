@@ -1,9 +1,10 @@
 package capgemini.gameshop.service;
 
 import capgemini.gameshop.dto.ProductDto;
+import capgemini.gameshop.entity.Product;
 import capgemini.gameshop.repository.ProductRepository;
-import com.github.dozermapper.core.Mapper;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,13 +18,19 @@ import java.util.stream.Collectors;
  *  Returns DTO's of Product
  */
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ProductService {
-    private final ProductRepository productRepository;
+    private ProductRepository productRepository;
 
-    private final Mapper mapper;
+    private ModelMapper mapper;
+
+    public ProductDto convertToProductDTO (Product product) {
+        ProductDto productDto = new ProductDto();
+        productDto = mapper.map(product, ProductDto.class);
+        return productDto;
+    }
 
     public List<ProductDto> findAll(){
-        return productRepository.findAll().stream().map(product -> mapper.map(product, ProductDto.class)).collect((Collectors.toList()));
+        return productRepository.findAll().stream().map(this::convertToProductDTO).collect((Collectors.toList()));
     }
 }

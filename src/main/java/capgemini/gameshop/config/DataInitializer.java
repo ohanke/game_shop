@@ -7,7 +7,9 @@ import capgemini.gameshop.repository.AdressRepository;
 import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
 import capgemini.gameshop.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -17,14 +19,15 @@ import static capgemini.gameshop.entity.Category.*;
 /**
  * This object initialize data for database for testing porpoise
  */
-@RequiredArgsConstructor
+@Component
+@AllArgsConstructor
 public class DataInitializer {
 
     private final static double VAT = 1.23d; //nett to gross parameter (based on polish tax value of 23%)
-    private final ProductRepository productRepository;
-    private final OrderRepository orderRepository;
-    private final AdressRepository adressRepository;
-    private final UserRepository userRepository;
+    private ProductRepository productRepository;
+    private OrderRepository orderRepository;
+    private AdressRepository adressRepository;
+    private UserRepository userRepository;
 
     /**
      * Initializing method.

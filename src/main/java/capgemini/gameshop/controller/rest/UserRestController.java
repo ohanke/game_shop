@@ -24,8 +24,14 @@ public class UserRestController {
     }
 
     @GetMapping("/user/{id}")
-    public UserDto findOne(@PathVariable int id) {
-        return new UserDto();
+    public UserDto findOne(@PathVariable long id) {
+        return userService.FindById(id);
     }
+
+    //TODO = finish this one
+//    @GetMapping("/user/{email}")
+//    public UserDto findOne(@PathVariable String email) {
+//        return userService.FindByEmail(email);
+//    }
 
 }
