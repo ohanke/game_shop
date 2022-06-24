@@ -26,19 +26,17 @@ public class Adress extends BaseEntity{
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
-    //@Column(name ="country")
     private String country;
 
-   // @Column(name ="street", nullable = false)
+    @Column(nullable = false)
     private String street;
 
-   // @Column(name ="state")
     private String state;
 
-    //@Column(name ="city", nullable = false)
+    @Column(nullable = false)
     private String city;
 
-    //@Column(name ="zip_code", nullable = false)
+    @Column(nullable = false)
     private String zip;
 
 }

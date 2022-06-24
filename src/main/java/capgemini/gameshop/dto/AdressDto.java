@@ -19,21 +19,18 @@ import javax.persistence.Column;
 @Getter
 @Setter
 public class AdressDto {
+
     private Long id;
 
     private UserDto user;
 
     private String country;
 
-
     private String street;
-
 
     private String state;
 
-
     private String city;
-
 
     private String zip;
 
