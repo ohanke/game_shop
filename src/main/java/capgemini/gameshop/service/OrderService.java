@@ -20,7 +20,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class OrderService {
+
     private OrderRepository orderRepository;
+
     private ModelMapper mapper;
 
     public OrderDto convertToOrderDTO (Order order) {

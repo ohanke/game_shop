@@ -30,7 +30,7 @@ public class DataInitializer {
     private UserRepository userRepository;
 
     /**
-     * Initializing method.
+     * Data Initializing method.
      */
     public void initialize() {
 

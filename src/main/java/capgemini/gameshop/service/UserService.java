@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class UserService {
+
     private ModelMapper mapper;
 
     private UserRepository userRepository;
