@@ -68,12 +68,12 @@ public class DataInitializer {
 
         //creating addresses and saving them to repository
 
-        createOrder("marian@kowalski.com",OrderStatus.RECIEVED, 1L); //product_id i te max id tha will be added to products
+        createOrder("marian@kowalski.com",OrderStatus.RECIEVED, 2L); //product_id i te max id tha will be added to products
         createOrder("oskar@hanke.com",OrderStatus.PROCESSING, 2L);
         createOrder("janina@nowak.com",OrderStatus.RECIEVED, 3L);
         createOrder("michal@tworuszka.com",OrderStatus.DELIVERED, 2L);
         createOrder("pawel@manowski.com",OrderStatus.RECIEVED, 4L);
-        createOrder("kdudek@gmail.com",OrderStatus.CANCELLED, 1L);
+        createOrder("kdudek@gmail.com",OrderStatus.CANCELLED, 2L);
 
     }
 

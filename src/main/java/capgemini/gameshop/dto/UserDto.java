@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.dozermapper.core.Mapping;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -31,12 +33,10 @@ public class UserDto {
     private String password;
 
     @Mapping("adresses")
-    @JsonIgnore
-    private List<Adress> adresses;
+    private List<AdressDto> adresses = new ArrayList<>();
 
     @Mapping("orders")
-    @JsonIgnore
-    private List<Order> orders;
+    private List<OrderDto> orders = new ArrayList<>();
 
     public UserDto(String firstName, String lastName, String email, String password) {
         this.id = null;

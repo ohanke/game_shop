@@ -42,7 +42,7 @@ public class ProductDto {
     private Double priceGross;
 
     @Mapping("orders")
-    private Set<Order> orders  = new HashSet<>();
+    private Set<OrderDto> orders  = new HashSet<>();
 
     public ProductDto(String name, Category category, Set<Attribute> attributes, Double priceNett, Double priceGross) {
         this.id = null;
