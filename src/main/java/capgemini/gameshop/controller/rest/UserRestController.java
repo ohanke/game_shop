@@ -4,6 +4,7 @@ import capgemini.gameshop.dto.UserDto;
 import capgemini.gameshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,4 +22,10 @@ public class UserRestController {
     public List<UserDto> getUsers(){
         return userService.findAll();
     }
+
+    @GetMapping("/user/{id}")
+    public UserDto findOne(@PathVariable int id) {
+        return new UserDto();
+    }
+
 }

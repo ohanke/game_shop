@@ -20,13 +20,16 @@ import javax.persistence.Column;
 public class AdressDto {
     @Mapping("id")
     private Long id;
-    @Mapping(" country")
+
+    @Mapping("user")
+    private UserDto user;
+    @Mapping("country")
     private String country;
 
-    @Mapping(" street")
+    @Mapping("street")
     private String street;
 
-    @Mapping(" state")
+    @Mapping("state")
     private String state;
 
     @Mapping("city")
