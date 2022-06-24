@@ -26,8 +26,7 @@ public class OrderService {
     private ModelMapper mapper;
 
     public OrderDto convertToOrderDTO (Order order) {
-        OrderDto orderDto = new OrderDto();
-        orderDto = mapper.map(order, OrderDto.class);
+        OrderDto orderDto = mapper.map(order, OrderDto.class);
         return orderDto;
     }
     public List<OrderDto> findAll(){

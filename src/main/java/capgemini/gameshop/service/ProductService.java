@@ -26,8 +26,7 @@ public class ProductService {
     private ModelMapper mapper;
 
     public ProductDto convertToProductDTO (Product product) {
-        ProductDto productDto = new ProductDto();
-        productDto = mapper.map(product, ProductDto.class);
+        ProductDto productDto = mapper.map(product, ProductDto.class);
         return productDto;
     }
 

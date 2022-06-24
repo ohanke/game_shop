@@ -29,8 +29,7 @@ public class AdressService {
     private ModelMapper mapper;
 
     public AdressDto convertToAdressDTO (Adress adress) {
-        AdressDto adressDto = new AdressDto();
-        adressDto = mapper.map(adress, AdressDto.class);
+        AdressDto adressDto = mapper.map(adress, AdressDto.class);
         return adressDto;
     }
 

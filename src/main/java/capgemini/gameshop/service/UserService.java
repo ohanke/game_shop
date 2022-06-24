@@ -27,8 +27,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public UserDto convertToUserDTO (User user) {
-    UserDto userDto = new UserDto();
-    userDto = mapper.map(user, UserDto.class);
+    UserDto userDto = mapper.map(user, UserDto.class);
     return userDto;
     }
 
