@@ -2,8 +2,7 @@ package capgemini.gameshop.dto;
 
 import capgemini.gameshop.entity.Attribute;
 import capgemini.gameshop.entity.Category;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +23,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope= ProductDto.class)
 public class ProductDto {
 
     private Long id;

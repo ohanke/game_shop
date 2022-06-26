@@ -1,14 +1,14 @@
 package capgemini.gameshop.dto;
 
 import capgemini.gameshop.entity.OrderStatus;
-import capgemini.gameshop.entity.Product;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,22 +24,26 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope= OrderDto.class)
 public class OrderDto {
 
     private Long id;
 
+    @JsonIgnore
     private UserDto user;
 
     private double totalValue;
 
     private OrderStatus orderStatus;
 
-    @JsonIgnore
-    private Set<Product> products = new HashSet<>();
+    private Set<ProductDto> products = new HashSet<>();
 
     private LocalDateTime createdAt;
 
-    public OrderDto(String date, double totalValue, OrderStatus orderStatus, Set<Product> products) {
+    public OrderDto(String date, double totalValue, OrderStatus orderStatus, Set<ProductDto> products) {
         this.id = null;
         this.totalValue = totalValue;
         this.orderStatus = orderStatus;

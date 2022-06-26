@@ -1,11 +1,13 @@
 package capgemini.gameshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
 
 /**
  * DTO class for entities of Adress
@@ -18,10 +20,15 @@ import javax.persistence.Column;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope= AdressDto.class)
 public class AdressDto {
 
     private Long id;
 
+    @JsonIgnore
     private UserDto user;
 
     private String country;

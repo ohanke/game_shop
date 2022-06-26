@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,11 +36,11 @@ public class User extends BaseEntity{
     private String password;
 
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.PERSIST)
-    private List<Adress> adresses;
+            cascade = CascadeType.ALL)
+    private List<Adress> adresses = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.PERSIST)
-    private List<Order> orders;
+            cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
 }

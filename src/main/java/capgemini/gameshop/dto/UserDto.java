@@ -1,12 +1,10 @@
 package capgemini.gameshop.dto;
 
-import capgemini.gameshop.entity.Adress;
-import capgemini.gameshop.entity.Order;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -20,6 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope= UserDto.class)
 public class UserDto {
 
     private Long id;
@@ -32,10 +34,8 @@ public class UserDto {
 
     private String password;
 
-    @JsonIgnore
     private List<AdressDto> adresses = new ArrayList<>();
 
-    @JsonIgnore
     private List<OrderDto> orders = new ArrayList<>();
 
     public UserDto(String firstName, String lastName, String email, String password) {

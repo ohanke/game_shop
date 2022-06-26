@@ -4,11 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +25,7 @@ public class Product extends BaseEntity{
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products",cascade = CascadeType.MERGE)
     private Set<Order> orders  = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
@@ -39,7 +36,7 @@ public class Product extends BaseEntity{
     @CollectionTable(name = "product_attribute",
             joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Attribute> attributes;
+    private Set<Attribute> attributes = new HashSet<>();
 
     @Column(nullable = false, scale = 2)
     private Double priceNett;
