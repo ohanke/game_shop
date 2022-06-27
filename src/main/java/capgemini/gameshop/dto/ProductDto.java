@@ -3,10 +3,8 @@ package capgemini.gameshop.dto;
 import capgemini.gameshop.entity.Attribute;
 import capgemini.gameshop.entity.Category;
 import com.fasterxml.jackson.annotation.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.sun.istack.NotNull;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,10 +17,9 @@ import java.util.Set;
  * for objects with no id.
  */
 
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id",
@@ -31,14 +28,18 @@ public class ProductDto {
 
     private Long id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private Category category;
 
+    @NotNull
     private Set<Attribute> attributes;
 
+    @NotNull
     private Double priceNett;
-
+    @NotNull
     private Double priceGross;
 
     @JsonIgnore
