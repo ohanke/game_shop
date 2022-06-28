@@ -58,18 +58,26 @@ public class ProductService {
 
     public void update(Long id, ProductDto productDto) {
         productRepository.findById(id)
-                .map(product -> {
-                    product.setName(productDto.getName());
-                    product.setCategory(productDto.getCategory());
-                    product.setAttributes(productDto.getAttributes());
-                    product.setPriceNett(productDto.getPriceNett());
-                    product.setPriceGross(productDto.getPriceGross());
-                    return convertToDTO(productRepository.save(product));
-                }).orElseThrow(() -> new ProductNotFoundException(
+                .map(product -> updateFields(productDto, product))
+                .orElseThrow(() -> new ProductNotFoundException(
                         "Product with id: " + id + " not found"));
     }
 
     public void delete(Long id) {
         productRepository.deleteById(id);
+    }
+
+    private ProductDto updateFields(ProductDto productDto, Product product) {
+        if (productDto.getName() != null)
+            product.setName(productDto.getName());
+        if (productDto.getCategory() != null)
+            product.setCategory(productDto.getCategory());
+        if (productDto.getAttributes() != null)
+            product.setAttributes(productDto.getAttributes());
+        if (productDto.getPriceNett() != null)
+            product.setPriceNett(productDto.getPriceNett());
+        if (productDto.getPriceGross() != null)
+            product.setPriceGross(productDto.getPriceGross());
+        return convertToDTO(productRepository.save(product));
     }
 }
