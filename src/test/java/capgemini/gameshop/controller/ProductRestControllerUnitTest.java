@@ -1,4 +1,4 @@
-package capgemini.gameshop.controller.rest;
+package capgemini.gameshop.controller;
 
 import capgemini.gameshop.config.DataInitializer;
 import capgemini.gameshop.service.ProductService;
@@ -30,7 +30,7 @@ class ProductRestControllerUnitTest {
     @Test
     @DisplayName("Test if List of Products on the url has 200 status and type Json")
     void get_JsonProductList_succes() throws Exception{
-        mockMvc.perform(get("/api/products"))
+        mockMvc.perform(get("/api/products/all"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[]"));

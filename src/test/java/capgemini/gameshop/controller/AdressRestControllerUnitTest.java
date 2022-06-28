@@ -1,7 +1,7 @@
-package capgemini.gameshop.controller.rest;
+package capgemini.gameshop.controller;
 
 import capgemini.gameshop.config.DataInitializer;
-import capgemini.gameshop.service.UserService;
+import capgemini.gameshop.service.AdressService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserRestController.class)
-class UserRestControllerUnitTest {
+@WebMvcTest(AdressRestController.class)
+class AdressRestControllerUnitTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -25,17 +25,16 @@ class UserRestControllerUnitTest {
     DataInitializer dataInitializer;
 
     @MockBean
-    UserService userService;
+    AdressService adressService;
 
     @Test
-    @DisplayName("Test if List of Users on the url has 200 status and type Json")
-    public void get_JsonUserList_succes() throws Exception{
-        mockMvc.perform(get("/api/users"))
+    @DisplayName("Test if List of Adresses on the url has 200 status and type Json")
+    void get_JsonAdressesList_succes() throws Exception {
+        mockMvc.perform(get("/api/adresses"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[]"));
 
-        verify(userService).findAll();
+        verify(adressService).findAll();
     }
-
 }
