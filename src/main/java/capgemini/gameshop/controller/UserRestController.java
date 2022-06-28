@@ -1,4 +1,4 @@
-package capgemini.gameshop.controller.rest;
+package capgemini.gameshop.controller;
 
 import capgemini.gameshop.dto.UserDto;
 import capgemini.gameshop.service.UserService;

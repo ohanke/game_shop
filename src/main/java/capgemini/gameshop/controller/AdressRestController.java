@@ -1,4 +1,4 @@
-package capgemini.gameshop.controller.rest;
+package capgemini.gameshop.controller;
 
 import capgemini.gameshop.dto.AdressDto;
 import capgemini.gameshop.service.AdressService;
