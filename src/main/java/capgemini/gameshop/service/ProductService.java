@@ -59,8 +59,7 @@ public class ProductService {
     public void update(Long id, ProductDto productDto) {
         productRepository.findById(id)
                 .map(product -> updateFields(productDto, product))
-                .orElseThrow(() -> new ProductNotFoundException(
-                        "Product with id: " + id + " not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
     }
 
     public void delete(Long id) {

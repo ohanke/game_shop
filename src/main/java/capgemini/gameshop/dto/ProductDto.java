@@ -23,29 +23,14 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",
-        scope= ProductDto.class)
 public class ProductDto {
 
     private Long id;
-
-    @NotNull
     private String name;
-
-    @NotNull
     private Category category;
-
-    @NotNull
     private Set<Attribute> attributes;
-
-    @NotNull
     private Double priceNett;
     private Double priceGross;
-
-    @JsonIgnore
-    private Set<OrderDto> orders  = new HashSet<>();
 
     public ProductDto(String name, Category category, Set<Attribute> attributes, Double priceNett, Double priceGross) {
         this.id = null;
