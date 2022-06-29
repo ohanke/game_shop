@@ -19,7 +19,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {
+        @Index(name = "fn_index", columnList = "firstName"),
+        @Index(name = "fn_ln_index", columnList = "firstName, lastName"),
+        @Index(name = "email_index", columnList = "email")})
 
 public class User extends BaseEntity{
 
@@ -38,6 +41,7 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL)
     private List<Adress> adresses = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL)
