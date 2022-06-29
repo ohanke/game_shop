@@ -4,10 +4,8 @@ import capgemini.gameshop.entity.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jdk.jfr.Timestamp;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -20,33 +18,26 @@ import java.util.Set;
  * for objects with no id.
  */
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",
-        scope= OrderDto.class)
 public class OrderDto {
 
     private Long id;
 
-    @JsonIgnore
-    private UserDto user;
+    private Long userId;
 
     private double totalValue;
 
     private OrderStatus orderStatus;
 
-    private Set<ProductDto> products = new HashSet<>();
+    //TODO display id of products
+//    private Set<Long> productsId = new HashSet<>();
 
-    private LocalDateTime createdAt;
-
-    public OrderDto(String date, double totalValue, OrderStatus orderStatus, Set<ProductDto> products) {
+    public OrderDto(String date, Long userId, double totalValue, OrderStatus orderStatus) {
         this.id = null;
+        this.userId = userId;
         this.totalValue = totalValue;
         this.orderStatus = orderStatus;
-        this.products = products;
     }
 }

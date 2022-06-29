@@ -30,7 +30,7 @@ class OrderRestControllerUnitTest {
     @Test
     @DisplayName("Test if List of Orders on the url has 200 status and type Json")
     void get_JsonOrderList_succes() throws Exception {
-        mockMvc.perform(get("/api/orders"))
+        mockMvc.perform(get("/api/orders/all"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[]"));
