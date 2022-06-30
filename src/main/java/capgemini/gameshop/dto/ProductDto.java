@@ -2,9 +2,6 @@ package capgemini.gameshop.dto;
 
 import capgemini.gameshop.entity.Attribute;
 import capgemini.gameshop.entity.Category;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -37,8 +32,8 @@ public class ProductDto {
     private Category category;
     @NotNull
     private Set<Attribute> attributes;
+    @Positive
     private Double priceNett;
-
     @Positive
     private Double priceGross;
 
