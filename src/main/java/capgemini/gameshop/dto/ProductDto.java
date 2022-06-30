@@ -10,6 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,10 +30,16 @@ import java.util.Set;
 public class ProductDto {
 
     private Long id;
+    @NotEmpty
+    @Size(min = 3, max = 20)
     private String name;
+    @NotNull
     private Category category;
+    @NotNull
     private Set<Attribute> attributes;
     private Double priceNett;
+
+    @Positive
     private Double priceGross;
 
     public ProductDto(String name, Category category, Set<Attribute> attributes, Double priceNett, Double priceGross) {
