@@ -78,16 +78,10 @@ public class ProductService {
     }
 
     private ProductDto updateFields(ProductDto productDto, Product product) {
-        if (productDto.getName() != null)
-            product.setName(productDto.getName());
-        if (productDto.getCategory() != null)
-            product.setCategory(productDto.getCategory());
-        if (productDto.getAttributes() != null)
-            product.setAttributes(productDto.getAttributes());
-        if (productDto.getPriceNett() != null)
-            product.setPriceNett(productDto.getPriceNett());
-        if (productDto.getPriceGross() != null)
-            product.setPriceGross(productDto.getPriceGross());
+        product.setName(productDto.getName());
+        product.setCategory(productDto.getCategory());
+        product.setAttributes(productDto.getAttributes());
+        product.setPrice(productDto.getPrice());
         return convertToDTO(productRepository.save(product));
     }
 }

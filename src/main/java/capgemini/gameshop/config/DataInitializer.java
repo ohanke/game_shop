@@ -8,7 +8,6 @@ import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
 import capgemini.gameshop.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -84,17 +83,15 @@ public class DataInitializer {
      * Method to create product object and save it in product repository
      * @param name - name of product
      * @param category - enum category of game (product)
-     * @param priceNett - nett value of product (gross is calculated by multiplying nett * tax value (VAT)
+     * @param price - value of product
      * @param attributes - set of enum values informing buyer what they can expect of the product
      */
-    public void createProduct(String name, Category category, double priceNett, Set<Attribute> attributes) {
-        double priceGross = priceNett * VAT;
+    public void createProduct(String name, Category category, double price, Set<Attribute> attributes) {
         Product product = new Product();
         product.setName(name);
         product.setCategory(category);
-        product.setPriceNett(priceNett);
+        product.setPrice(price);
         product.setAttributes(attributes);
-        product.setPriceGross(priceGross);
         productRepository.save(product);
     }
 
@@ -110,7 +107,7 @@ public class DataInitializer {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
         order.setUser(user);
         double totalValue = products.stream()
-                            .mapToDouble(Product::getPriceGross)
+                            .mapToDouble(Product::getPrice)
                             .sum();
 
         order.setTotalValue(totalValue);

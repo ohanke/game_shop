@@ -30,19 +30,16 @@ public class ProductDto {
     private String name;
     @NotNull
     private Category category;
-    @NotNull
+    @NotEmpty
     private Set<Attribute> attributes;
     @Positive
-    private Double priceNett;
-    @Positive
-    private Double priceGross;
+    private Double price;
 
-    public ProductDto(String name, Category category, Set<Attribute> attributes, Double priceNett, Double priceGross) {
+    public ProductDto(String name, Category category, Set<Attribute> attributes, Double price) {
         this.id = null;
         this.name = name;
         this.category = category;
         this.attributes = attributes;
-        this.priceNett = priceNett;
-        this.priceGross = priceGross;
+        this.price = price;
     }
 }

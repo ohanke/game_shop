@@ -6,7 +6,6 @@ import capgemini.gameshop.entity.Category;
 import capgemini.gameshop.entity.Product;
 import capgemini.gameshop.exception.ProductNotFoundException;
 import capgemini.gameshop.repository.ProductRepository;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -15,11 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -108,23 +104,20 @@ public class ProductServiceUnitTest {
         dto.setName("Flock");
         dto.setCategory(Category.ACTION);
         dto.setAttributes(Set.of(Attribute.TEEN));
-        dto.setPriceNett(10.0);
-        dto.setPriceGross(50.0);
+        dto.setPrice(50.0);
 
         Product productToSave = new Product();
         productToSave.setName("Flock");
         productToSave.setCategory(Category.ACTION);
         productToSave.setAttributes(Set.of(Attribute.TEEN));
-        productToSave.setPriceNett(50.0);
-        productToSave.setPriceGross(50.0);
+        productToSave.setPrice(50.0);
 
         Product returnedProduct = new Product();
         returnedProduct.setId(501L);
         returnedProduct.setName("Flock");
         returnedProduct.setCategory(Category.ACTION);
         returnedProduct.setAttributes(Set.of(Attribute.TEEN));
-        returnedProduct.setPriceNett(50.0);
-        returnedProduct.setPriceGross(50.0);
+        returnedProduct.setPrice(50.0);
 
         when(productRepository.save(any())).thenReturn(returnedProduct);
         when(modelMapper.map(ProductDto.class, Product.class)).thenReturn(new Product());
