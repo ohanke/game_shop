@@ -181,21 +181,6 @@ class UserServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("Updating users email, email already exists in database, throws Exception")
-    void update_userMailOnly_throwsEmailExistException() {
-        //given`
-        Long id = 3L;
-        UserDto user = new UserDto();
-        user.setEmail("oskar@hanke.com");
-
-        //when
-        EmailExistException thrown = assertThrows(EmailExistException.class, () -> userService.update(id, user));
-
-        //then
-        assertEquals("Email: " + user.getEmail() + " already in use", thrown.getMessage());
-    }
-
-    @Test
     @DisplayName("Deleting user from database, success")
     void delete_success() {
         //given
