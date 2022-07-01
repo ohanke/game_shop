@@ -15,8 +15,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,18 +44,13 @@ public class ProductServiceUnitTest {
         productService = new ProductService(productRepository, modelMapper);
     }
 
-    @Disabled
     @Test
-    void findAll(){
-        //given
-        List<ProductDto> productDtos = List.of(new ProductDto());
-        List<Product> products = List.of(new Product());
-        Product product = new Product();
-        ProductDto productDto = new ProductDto();
+    void findAll_listOfOneProduct_success(){
+        List<Product> products = new ArrayList<>();
+        products.add(new Product());
 
         when(productRepository.findAll()).thenReturn(products);
-        when(modelMapper.map(any(),any())).thenReturn(productDtos);
-
+        when(modelMapper.map(any(),any())).thenReturn(new ProductDto());
 
         //when
         List<ProductDto> productsReturned = productService.findAll();
@@ -60,7 +58,6 @@ public class ProductServiceUnitTest {
         //then
         Assertions.assertNotNull(productsReturned);
         verify(productRepository).findAll();
-
     }
 
     @Test
@@ -100,5 +97,61 @@ public class ProductServiceUnitTest {
         //then
         Assertions.assertThrows(ProductNotFoundException.class, () -> productService.findById(id));
         verify(productRepository).findById(anyLong());
+    }
+
+    @Test
+    @Disabled
+    void save_validProduct_success(){
+        //given
+        Long id = 501L;
+        ProductDto dto = new ProductDto();
+        dto.setName("Flock");
+        dto.setCategory(Category.ACTION);
+        dto.setAttributes(Set.of(Attribute.TEEN));
+        dto.setPriceNett(10.0);
+        dto.setPriceGross(50.0);
+
+        Product productToSave = new Product();
+        productToSave.setName("Flock");
+        productToSave.setCategory(Category.ACTION);
+        productToSave.setAttributes(Set.of(Attribute.TEEN));
+        productToSave.setPriceNett(50.0);
+        productToSave.setPriceGross(50.0);
+
+        Product returnedProduct = new Product();
+        returnedProduct.setId(501L);
+        returnedProduct.setName("Flock");
+        returnedProduct.setCategory(Category.ACTION);
+        returnedProduct.setAttributes(Set.of(Attribute.TEEN));
+        returnedProduct.setPriceNett(50.0);
+        returnedProduct.setPriceGross(50.0);
+
+        when(productRepository.save(any())).thenReturn(returnedProduct);
+        when(modelMapper.map(ProductDto.class, Product.class)).thenReturn(new Product());
+        when(modelMapper.map(Product.class, ProductDto.class)).thenReturn(new ProductDto());
+
+        //when
+        ProductDto savedProduct = productService.save(dto);
+
+        //then
+        System.out.println(savedProduct.getName());
+        verify(productRepository).save(any());
+    }
+
+    @Test
+    @Disabled
+    void update_validProduct_success(){
+
+    }
+    @Test
+    void delete_validId_success(){
+        //given
+        Long id = 4L;
+
+        //when
+        productService.delete(id);
+
+        //then
+        verify(productRepository).deleteById(anyLong());
     }
 }

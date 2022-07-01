@@ -28,10 +28,20 @@ public class ProductService {
 
     private final ModelMapper mapper;
 
+    /**
+     * Converts Product into ProductDto
+     * @param entity
+     * @return DTO
+     */
     private ProductDto convertToDTO(Product entity) {
         return mapper.map(entity, ProductDto.class);
     }
 
+    /**
+     * Converts ProductDto into Product
+     * @param dto
+     * @return Product
+     */
     private Product converToEntity(ProductDto dto) {
         return mapper.map(dto, Product.class);
     }
@@ -52,7 +62,8 @@ public class ProductService {
 
 
     public ProductDto save(ProductDto productDto) {
-        Product savedProduct = productRepository.save(converToEntity(productDto));
+        Product productToSave = converToEntity(productDto);
+        Product savedProduct = productRepository.save(productToSave);
         return convertToDTO(savedProduct);
     }
 
