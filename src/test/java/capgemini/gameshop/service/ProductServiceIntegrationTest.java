@@ -3,7 +3,6 @@ package capgemini.gameshop.service;
 import capgemini.gameshop.dto.ProductDto;
 import capgemini.gameshop.entity.Attribute;
 import capgemini.gameshop.entity.Category;
-import capgemini.gameshop.exception.OrderNotFoundException;
 import capgemini.gameshop.exception.ProductNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-class ProductServiceTest {
+class ProductServiceIntegrationTest {
 
     @Autowired
     ProductService productService;

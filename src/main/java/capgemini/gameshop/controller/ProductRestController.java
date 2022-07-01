@@ -33,7 +33,7 @@ public class ProductRestController {
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Long id, @RequestBody ProductDto productDto){
+    public void update(@PathVariable Long id,@Valid @RequestBody ProductDto productDto){
         productService.update(id, productDto);
     }
 

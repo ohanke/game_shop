@@ -3,7 +3,6 @@ package capgemini.gameshop.service;
 import capgemini.gameshop.dto.OrderDto;
 import capgemini.gameshop.entity.OrderStatus;
 import capgemini.gameshop.exception.OrderNotFoundException;
-import capgemini.gameshop.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-class OrderServiceTest {
+class OrderServiceIntegrationTest {
 
     @Autowired
     OrderService orderService;
