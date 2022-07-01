@@ -1,5 +1,6 @@
 package capgemini.gameshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,14 +22,14 @@ import java.util.Set;
 @Entity
 @Table(name = "product", indexes = {
         @Index(name = "product_name_index", columnList = "name"),
-        @Index(name = "product_pr_nett_index", columnList = "priceNett"),
-        @Index(name = "product_pr_gross_index", columnList = "priceGross")})
+        @Index(name = "product_pr_index", columnList = "price")})
 public class Product extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     //TODO add persis related add/remove methods for orders
+    @JsonIgnore
     @ManyToMany(mappedBy = "products")
     private Set<Order> orders = new HashSet<>();
 
@@ -43,10 +44,5 @@ public class Product extends BaseEntity {
     private Set<Attribute> attributes = new HashSet<>();
 
     @Column(nullable = false, scale = 2)
-    private Double priceNett;
-
-    @Column(nullable = false, scale = 2)
-    private Double priceGross;
-
-
+    private Double price;
 }
