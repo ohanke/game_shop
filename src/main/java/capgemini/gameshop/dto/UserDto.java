@@ -1,9 +1,11 @@
 package capgemini.gameshop.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  * DTO class for entities of User
@@ -14,18 +16,25 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class UserDto {
 
     private Long id;
 
+    @NotEmpty
+    @Size(min = 2)
     private String firstName;
 
+    @NotEmpty
+    @Size(min = 2)
     private String lastName;
 
+    @NotEmpty
+    @Size(min = 5)
     private String email;
 
+    @NotEmpty
+    @Size(min = 8, max = 32)
     private String password;
 
     public UserDto(String firstName, String lastName, String email, String password) {
@@ -35,11 +44,4 @@ public class UserDto {
         this.email = email;
         this.password = password;
     }
-//    public UserDto(Long id, String firstName, String lastName, String email, String password) {
-//        this.id = id;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.email = email;
-//        this.password = password;
-//    }
 }

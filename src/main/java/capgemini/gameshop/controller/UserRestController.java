@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class UserRestController {
      *
      * @return - list of user
      */
-    @GetMapping("/all")
+    @GetMapping("/")
     public List<UserDto> getUsers() {
         return userService.findAll();
     }
@@ -34,7 +35,6 @@ public class UserRestController {
      * @return - the user with specific ID, or errors status NOT_FOUND
      */
     @GetMapping(value = "/id/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseStatus(HttpStatus.OK)
     public UserDto getUserById(@PathVariable Long id) {
         return userService.findById(id);
     }
@@ -45,8 +45,8 @@ public class UserRestController {
      * @param email - email of the user to retrieve
      * @return - the user with specific email, or errors status NOT_FOUND
      */
-    @GetMapping("/email/{email}")
-    public UserDto GetUserByMail(@PathVariable String email) {
+    @GetMapping(value = "/email/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserDto getUserByMail(@PathVariable String email) {
         return userService.findByEmail(email);
     }
 
@@ -56,10 +56,9 @@ public class UserRestController {
      * @param userDto - the user to create
      * @return - the created product, or errors status FORBIDDEN on existing userDto eamil value in database
      */
-    @PostMapping(value = "/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@RequestBody UserDto userDto) {
-        return userService.save(userDto);
+    @PostMapping(value = "/")
+    public UserDto create(@Valid @RequestBody UserDto userDto) {
+        return userService.create(userDto);
     }
 
     /**
@@ -69,10 +68,8 @@ public class UserRestController {
      * @param userDto - user field values to update
      * @return - the updated product, or errors status NOT_FOUND
      */
-    @PutMapping("/update/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto update(@PathVariable Long id, @RequestBody UserDto userDto) {
-        UserDto existingUser = userService.findById(id);
+    @PutMapping("/{id}")
+    public UserDto update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
         return userService.update(id, userDto);
     }
 

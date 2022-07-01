@@ -1,27 +1,25 @@
 package capgemini.gameshop.controller;
 
 import capgemini.gameshop.dto.UserDto;
+import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -45,7 +43,7 @@ class UserRestControllerUnitTest {
     @Test
     @DisplayName("GET /api/users Search all Users on the url has 200 status and type Json")
     public void get_JsonUserList_succes() throws Exception {
-        mockMvc.perform(get("/api/users/all"))
+        mockMvc.perform(get("/api/users/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[]"));
@@ -71,17 +69,17 @@ class UserRestControllerUnitTest {
                 .andExpect(status().isOk());
 
         verify(userService).findByEmail("oskar@hanke.com");
+
     }
 
     @Test
     @DisplayName("GET /api/users/email Search user by email with incorect email returns 404")
     public void get_findUserByEmail_error() throws Exception {
-        BDDMockito.given(userService.findByEmail("abcd")).willReturn(new UserDto());
 
-        MvcResult mvcResult = mockMvc.perform(get("/api/users/email")).andReturn();
+        when(userService.findByEmail("abcd")).thenThrow(UserNotFoundException.class);
 
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(HttpStatus.NOT_FOUND.value(), status);
+        mockMvc.perform(get("/api/users/email/abcd"))
+                .andExpect(status().isNotFound());
 
     }
 
@@ -90,9 +88,9 @@ class UserRestControllerUnitTest {
     public void post_createUser_success() throws Exception {
         UserDto saveUser = new UserDto("Scottie", "Pippen", "scot@pipe.com", "1234567");
 
-        Mockito.when(userService.save(any())).thenReturn(saveUser);
+        Mockito.when(userService.create(any())).thenReturn(saveUser);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/create")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(this.mapper.writeValueAsString(saveUser)))
