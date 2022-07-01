@@ -19,14 +19,18 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product")
-public class Product extends BaseEntity{
+@Table(name = "product", indexes = {
+        @Index(name = "product_name_index", columnList = "name"),
+        @Index(name = "product_pr_nett_index", columnList = "priceNett"),
+        @Index(name = "product_pr_gross_index", columnList = "priceGross")})
+public class Product extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "products",cascade = CascadeType.MERGE)
-    private Set<Order> orders  = new HashSet<>();
+    //TODO add persis related add/remove methods for orders
+    @ManyToMany(mappedBy = "products")
+    private Set<Order> orders = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

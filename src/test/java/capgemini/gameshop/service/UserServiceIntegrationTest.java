@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-class UserServiceTest {
+class UserServiceIntegrationTest {
 
     @Autowired
     UserService userService;
@@ -29,13 +29,13 @@ class UserServiceTest {
         userDto.setLastName("Tyson");
         userDto.setEmail("mike@tyson.pl");
         userDto.setPassword("mike1256");
-        userService.save(userDto);
+        userService.create(userDto);
 
         userDto.setFirstName("Michael");
         userDto.setLastName("Jordan");
         userDto.setEmail("mj@nba.com");
         userDto.setPassword("mj");
-        userService.save(userDto);
+        userService.create(userDto);
 
         //when
         List<UserDto> users = userService.findAll();
@@ -101,7 +101,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("Saving valid user do Database, success")
-    void save_validUser_success() {
+    void create_validUser_success() {
         //given
         UserDto userDto = new UserDto();
         userDto.setFirstName("Mike");
@@ -110,7 +110,7 @@ class UserServiceTest {
         userDto.setPassword("mike1256");
 
         //when
-        UserDto user = userService.save(userDto);
+        UserDto user = userService.create(userDto);
 
         //then
         assertNotNull(user.getId());
@@ -133,8 +133,57 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Updating existing user with no data change to Database, success")
+    void update_existingUserNoDataChange_success() {
+        //given
+        UserDto userDto = new UserDto();
+        userDto.setFirstName("Mike");
+        userDto.setLastName("Tyson");
+        userDto.setEmail("mike@tyson.pl");
+        userDto.setPassword("mike1256");
+
+        //when
+        UserDto user = userService.create(userDto);
+
+        UserDto user2 = userService.update(user.getId(), user);
+
+        //then
+        assertEquals(user.getId(), user2.getId());
+        assertEquals(user.getFirstName(), user2.getFirstName());
+        assertEquals(user.getLastName(), user2.getLastName());
+        assertEquals(user.getEmail(), user2.getEmail());
+    }
+
+    @Test
+    @DisplayName("Updating existing user with mail change - new mail already exists in database, throws Exception")
+    void update_mailChange_mailExistsInOtherUser_throwsException() {
+        //given
+        UserDto user1 = new UserDto();
+        user1.setFirstName("Mike");
+        user1.setLastName("Tyson");
+        user1.setEmail("mike@tyson.pl");
+        user1.setPassword("mike1256");
+
+        UserDto user2 = new UserDto();
+        user2.setFirstName("Morgan");
+        user2.setLastName("Freeman");
+        user2.setEmail("morg@free.com");
+        user2.setPassword("mfgod");
+
+        //when
+        UserDto user1Creted = userService.create(user1);
+        userService.create(user2);
+
+        EmailExistException thrown = assertThrows(EmailExistException.class, () -> userService.update(user1Creted.getId(), user2));
+
+        //then
+        assertEquals("Email: " + user2.getEmail() + " already in use", thrown.getMessage());
+    }
+
+    @Test
     @DisplayName("Updating users email, email already exists in database, throws Exception")
-    void update_userMailOnly_thowsEmailExistException() {
+    void update_userMailOnly_throwsEmailExistException() {
+        //given`
         Long id = 3L;
         UserDto user = new UserDto();
         user.setEmail("oskar@hanke.com");
@@ -157,7 +206,7 @@ class UserServiceTest {
         userDto.setLastName("Jones");
         userDto.setEmail("indi@jones.com");
         userDto.setPassword("rock123");
-        userService.save(userDto);
+        userService.create(userDto);
         int initialSize = userService.findAll().size();
 
         //when

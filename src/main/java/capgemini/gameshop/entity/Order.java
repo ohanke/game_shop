@@ -20,7 +20,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", indexes = {
+        @Index(name = "order_tot_val_index", columnList = "totalValue"),
+        @Index(name = "order_stat_index", columnList = "orderStatus")})
 public class Order extends BaseEntity{
 
     @ManyToOne
@@ -33,6 +35,7 @@ public class Order extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    //TODO add Cascade type persis - and related add/remove methods for product
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "order_product",
             joinColumns = @JoinColumn(name = "order_id"),

@@ -1,15 +1,13 @@
 package capgemini.gameshop.dto;
 
 import capgemini.gameshop.entity.OrderStatus;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jdk.jfr.Timestamp;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 /**
  * DTO class for entities of Order
@@ -25,16 +23,16 @@ public class OrderDto {
 
     private Long id;
 
+    @NonNull
     private Long userId;
 
+    @Positive
     private double totalValue;
 
+    @NotNull
     private OrderStatus orderStatus;
 
-    //TODO display id of products
-//    private Set<Long> productsId = new HashSet<>();
-
-    public OrderDto(String date, Long userId, double totalValue, OrderStatus orderStatus) {
+    public OrderDto(String date, @NonNull Long userId, double totalValue, OrderStatus orderStatus) {
         this.id = null;
         this.userId = userId;
         this.totalValue = totalValue;

@@ -5,6 +5,7 @@ import capgemini.gameshop.entity.User;
 import capgemini.gameshop.exception.EmailExistException;
 import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.repository.UserRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -77,7 +78,7 @@ public class UserService {
      * @param userDto - UserDto object received from request body at controller.
      * @return - return UserDto object
      */
-    public UserDto save(UserDto userDto) {
+    public UserDto create(UserDto userDto) {
 
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new EmailExistException(userDto.getEmail());
@@ -94,9 +95,19 @@ public class UserService {
      * @return - return UserDto object
      */
     public UserDto update(Long id, UserDto userDto) {
-        return userRepository.findById(id)
-                .map(user -> updateFields(userDto, user))
-                .orElseThrow(() -> new UserNotFoundException(userDto.getId()));
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        if (!userDto.getEmail().equals(existingUser.getEmail())) {
+            if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+                throw new EmailExistException(userDto.getEmail());
+            } else {
+                existingUser.setEmail(userDto.getEmail());
+            }
+        }
+        existingUser.setFirstName(userDto.getFirstName());
+        existingUser.setLastName(userDto.getLastName());
+        existingUser.setPassword(userDto.getPassword());
+
+        return mapper.map(existingUser, UserDto.class);
     }
 
     /**
@@ -117,10 +128,10 @@ public class UserService {
      * @param user    - user object that will be change
      * @return - return UserDto object
      */
-    private UserDto updateFields(UserDto userDto, User user) {
-        if (userDto.getEmail() != null) {
+    private UserDto updateFields(@NonNull UserDto userDto, User user) {
+        if (userDto.getEmail() != null && !userDto.getEmail().equals(user.getEmail())) {
             if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-                throw new EmailExistException(user.getEmail());
+                throw new EmailExistException(userDto.getEmail());
             } else {
                 user.setEmail(userDto.getEmail());
             }

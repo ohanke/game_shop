@@ -1,13 +1,12 @@
 package capgemini.gameshop.controller;
 
 import capgemini.gameshop.dto.OrderDto;
-import capgemini.gameshop.dto.ProductDto;
-import capgemini.gameshop.entity.Order;
 import capgemini.gameshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,13 +27,13 @@ public class OrderRestController {
     }
 
     @PostMapping("/create")
-    public OrderDto saveOrder(@RequestBody OrderDto orderDto){
+    public OrderDto saveOrder(@Valid @RequestBody OrderDto orderDto) {
         return orderService.save(orderDto);
     }
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Long id, @RequestBody OrderDto orderDto){
+    public void update(@PathVariable Long id, @Valid @RequestBody OrderDto orderDto) {
         orderService.update(id, orderDto);
     }
 

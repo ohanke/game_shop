@@ -20,9 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users", indexes = {
-        @Index(name = "fn_index", columnList = "firstName"),
-        @Index(name = "fn_ln_index", columnList = "firstName, lastName"),
-        @Index(name = "email_index", columnList = "email")})
+        @Index(name = "users_fn_ln_index", columnList = "firstName, lastName"),
+        @Index(name = "users_email_index", columnList = "email")})
 
 public class User extends BaseEntity{
 
