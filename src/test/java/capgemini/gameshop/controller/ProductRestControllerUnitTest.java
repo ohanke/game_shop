@@ -1,5 +1,6 @@
 package capgemini.gameshop.controller;
 
+import capgemini.gameshop.dto.OrderDto;
 import capgemini.gameshop.dto.ProductDto;
 import capgemini.gameshop.entity.Attribute;
 import capgemini.gameshop.entity.Category;
@@ -9,8 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -28,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureJsonTesters
 @ExtendWith(SpringExtension.class)
 class ProductRestControllerUnitTest {
 
@@ -35,7 +39,7 @@ class ProductRestControllerUnitTest {
     private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper mapper;
+    JacksonTester<ProductDto> productTester;
 
     @MockBean
     ProductService productService;
@@ -69,7 +73,7 @@ class ProductRestControllerUnitTest {
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(productToSave)))
+                .content(productTester.write(productToSave).getJson()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
@@ -88,7 +92,7 @@ class ProductRestControllerUnitTest {
         mockMvc.perform(put("/api/products/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(updateBody)))
+                .content(productTester.write(updateBody).getJson()))
                 .andExpect(status().isNoContent());
 
         verify(productService).update(anyLong(), any());

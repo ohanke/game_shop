@@ -5,6 +5,7 @@ import capgemini.gameshop.dto.ProductDto;
 import capgemini.gameshop.entity.Order;
 import capgemini.gameshop.entity.Product;
 import capgemini.gameshop.exception.OrderNotFoundException;
+import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -64,10 +65,8 @@ public class OrderService {
 
 
     private OrderDto updateFields(OrderDto orderDto, Order order) {
-        if (orderDto.getUserId() != null){
-            //TODO change to userService when implemented
-            order.setUser(userRepository.findById(orderDto.getUserId()).get());
-        }
+        order.setUser(userRepository.findById(orderDto.getUserId()).orElseThrow(
+                () -> new UserNotFoundException("User with id: " + orderDto.getUserId() + " not found")));
         order.setTotalValue(orderDto.getTotalValue());
         order.setOrderStatus(orderDto.getOrderStatus());
         return convertToDTO(orderRepository.save(order));

@@ -68,24 +68,25 @@ class OrderServiceIntegrationTest {
 
         //when
         OrderDto savedOrder = orderService.save(orderDto);
-        assertNotNull(savedOrder);
+
+        //then
+        assertNotNull(savedOrder.getId());
     }
 
     @Test
-    void update_productWithStatusOnly_succes(){
+    void update_allFieldsValid_success(){
         //given
         Long id = 1L;
-        OrderDto startingOrder = orderService.findById(id);
+        OrderDto updateBody = new OrderDto(1L, 50.50, OrderStatus.PROCESSING);
 
         //when
-        OrderDto orderUpdate = new OrderDto();
-        orderUpdate.setOrderStatus(OrderStatus.CANCELLED);
-        assertNotSame(orderUpdate.getOrderStatus(), startingOrder.getOrderStatus());
-        orderService.update(id, orderUpdate);
+        orderService.update(id, updateBody);
+        OrderDto updatedOrder = orderService.findById(id);
 
         //then
-        OrderDto updatedOrder = orderService.findById(id);
-        assertEquals(orderUpdate.getOrderStatus(), updatedOrder.getOrderStatus());
+        assertEquals(updateBody.getUserId(), updatedOrder.getUserId());
+        assertEquals(updateBody.getTotalValue(), updatedOrder.getTotalValue());
+        assertEquals(updateBody.getOrderStatus(), updatedOrder.getOrderStatus());
     }
 
     @Test
