@@ -1,6 +1,5 @@
 package capgemini.gameshop.controller;
 
-import capgemini.gameshop.config.DataInitializer;
 import capgemini.gameshop.dto.ProductDto;
 import capgemini.gameshop.entity.Attribute;
 import capgemini.gameshop.entity.Category;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -44,7 +42,7 @@ class ProductRestControllerUnitTest {
 
     @Test
     @DisplayName("Test if List of Products on the url has 200 status and type Json")
-    public void get_getAllAsJSON_success() throws Exception{
+    public void get_listOfAllProducts() throws Exception{
         mockMvc.perform(get("/api/products"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -54,7 +52,7 @@ class ProductRestControllerUnitTest {
     }
 
     @Test
-    public void get_validId_success() throws Exception {
+    public void get_validId_singleProducts() throws Exception {
         mockMvc.perform(get("/api/products/1"))
                 .andExpect(status().isOk());
 
