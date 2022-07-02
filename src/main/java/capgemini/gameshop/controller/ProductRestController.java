@@ -16,7 +16,7 @@ public class ProductRestController {
 
     private final ProductService productService;
 
-    @GetMapping("/all")
+    @GetMapping()
     public List<ProductDto> getProducts(){
         return productService.findAll();
     }
@@ -26,18 +26,18 @@ public class ProductRestController {
         return productService.findById(id);
     }
 
-    @PostMapping("/create")
-    public ProductDto saveProduct(@Valid @RequestBody ProductDto productDto){
+    @PostMapping()
+    public ProductDto create(@Valid @RequestBody ProductDto productDto){
         return productService.save(productDto);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Long id,@Valid @RequestBody ProductDto productDto){
         productService.update(id, productDto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
         productService.delete(id);
