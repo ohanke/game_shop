@@ -10,9 +10,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureJsonTesters
 @ExtendWith(SpringExtension.class)
 class OrderRestControllerUnitTest {
 
@@ -35,7 +38,7 @@ class OrderRestControllerUnitTest {
     private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper mapper;
+    JacksonTester<OrderDto> orderTester;
 
     @MockBean
     OrderService orderService;
@@ -68,7 +71,7 @@ class OrderRestControllerUnitTest {
         mockMvc.perform(post("/api/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(orderToSave)))
+                                .content(orderTester.write(orderToSave).getJson()))
                         .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
@@ -86,7 +89,7 @@ class OrderRestControllerUnitTest {
         mockMvc.perform(put("/api/orders/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(updateBody)))
+                        .content(orderTester.write(updateBody).getJson()))
                         .andExpect(status().isNoContent());
 
 
