@@ -25,7 +25,7 @@ import java.util.Set;
 public class OrderDto {
 
     private Long id;
-    @NonNull
+    @NotNull
     private Long userId;
     @Positive
     private double totalValue;
@@ -34,7 +34,7 @@ public class OrderDto {
 
     private Set<ProductDto> products;
     
-    public OrderDto(String date, @NonNull Long userId, double totalValue, OrderStatus orderStatus) {
+    public OrderDto(Long userId, double totalValue, OrderStatus orderStatus) {
         this.id = null;
         this.userId = userId;
         this.totalValue = totalValue;

@@ -16,7 +16,7 @@ public class OrderRestController {
 
     private final OrderService orderService;
 
-    @GetMapping("/all")
+    @GetMapping("")
     public List<OrderDto> getOrders(){
         return orderService.findAll();
     }
@@ -26,18 +26,18 @@ public class OrderRestController {
         return orderService.findById(id);
     }
 
-    @PostMapping("/create")
-    public OrderDto saveOrder(@Valid @RequestBody OrderDto orderDto) {
+    @PostMapping("")
+    public OrderDto create(@Valid @RequestBody OrderDto orderDto) {
         return orderService.save(orderDto);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Long id, @Valid @RequestBody OrderDto orderDto) {
         orderService.update(id, orderDto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
         orderService.delete(id);
