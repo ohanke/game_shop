@@ -57,7 +57,7 @@ public class ProductService {
     public ProductDto findById(Long id) {
         return productRepository.findById(id)
                 .map(this::convertToDTO)
-                .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
 
@@ -70,7 +70,7 @@ public class ProductService {
     public void update(Long id, ProductDto productDto) {
         productRepository.findById(id)
                 .map(product -> updateFields(productDto, product))
-                .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     public void delete(Long id) {

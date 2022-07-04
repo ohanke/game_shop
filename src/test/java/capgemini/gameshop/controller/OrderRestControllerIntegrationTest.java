@@ -85,7 +85,7 @@ public class OrderRestControllerIntegrationTest {
     @Test
     void delete_validId_success() throws Exception{
         //given
-        OrderDto orderToDelete = orderService.save(new OrderDto(1L, 50.50, OrderStatus.PROCESSING));
+        OrderDto orderToDelete = orderService.create(new OrderDto(1L, 50.50, OrderStatus.PROCESSING));
 
         mockMvc.perform(delete("/api/orders/" + orderToDelete.getId()))
                 .andExpect(status().isNoContent());

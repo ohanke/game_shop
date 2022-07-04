@@ -26,8 +26,8 @@ class OrderServiceIntegrationTest {
         OrderDto orderDto = new OrderDto();
         orderDto.setUserId(1L);
         orderDto.setTotalValue(500);
-        orderDto.setOrderStatus(OrderStatus.RECIEVED);
-        orderService.save(orderDto);
+        orderDto.setOrderStatus(OrderStatus.NEW);
+        orderService.create(orderDto);
         //when
 
         List<OrderDto> orders = orderService.findAll();
@@ -63,11 +63,11 @@ class OrderServiceIntegrationTest {
         OrderDto orderDto = new OrderDto();
         orderDto.setUserId(1L);
         orderDto.setTotalValue(500);
-        orderDto.setOrderStatus(OrderStatus.RECIEVED);
-        orderService.save(orderDto);
+        orderDto.setOrderStatus(OrderStatus.NEW);
+        orderService.create(orderDto);
 
         //when
-        OrderDto savedOrder = orderService.save(orderDto);
+        OrderDto savedOrder = orderService.create(orderDto);
 
         //then
         assertNotNull(savedOrder.getId());
