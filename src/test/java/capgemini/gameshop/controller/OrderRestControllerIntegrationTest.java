@@ -1,8 +1,12 @@
 package capgemini.gameshop.controller;
 
 import capgemini.gameshop.dto.OrderDto;
+import capgemini.gameshop.dto.ProductDto;
+import capgemini.gameshop.entity.Attribute;
+import capgemini.gameshop.entity.Category;
 import capgemini.gameshop.entity.OrderStatus;
 import capgemini.gameshop.service.OrderService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -14,6 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
+
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -89,5 +95,15 @@ public class OrderRestControllerIntegrationTest {
 
         mockMvc.perform(delete("/api/orders/" + orderToDelete.getId()))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void addProduct_validParams_success() throws Exception {
+        Long orderId = 1L;
+        Long productId = 2L;
+
+        mockMvc.perform(get("/api/orders/" + orderId + "/add/" + productId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 }

@@ -2,7 +2,10 @@ package capgemini.gameshop.service;
 
 import capgemini.gameshop.dto.OrderDto;
 import capgemini.gameshop.entity.OrderStatus;
+import capgemini.gameshop.exception.DuplicateOrderingOfProductException;
 import capgemini.gameshop.exception.OrderNotFoundException;
+import capgemini.gameshop.exception.ProductNotFoundException;
+import capgemini.gameshop.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +22,8 @@ class OrderServiceIntegrationTest {
 
     @Autowired
     OrderService orderService;
+    @Autowired
+    ProductRepository productRepository;
 
     @Test
     void findAll(){
@@ -62,8 +67,6 @@ class OrderServiceIntegrationTest {
         //given
         OrderDto orderDto = new OrderDto();
         orderDto.setUserId(1L);
-        orderDto.setTotalValue(500);
-        orderDto.setOrderStatus(OrderStatus.NEW);
         orderService.create(orderDto);
 
         //when
@@ -103,5 +106,52 @@ class OrderServiceIntegrationTest {
 
         //then
         assertEquals(afterDeleteSize, (startingSize - elementsToDelete));
+    }
+
+    @Test
+    void addProduct_bothIdValid_success(){
+        //given
+        Long orderId = 1L;
+        Long productId = 2L;
+        int startingProductsAmount = orderService.findById(orderId).getProducts().size();
+
+        //when
+        OrderDto modifiedOrder = orderService.addProduct(orderId, productId);
+
+        //then
+        assertTrue(modifiedOrder.getProducts().size() > startingProductsAmount);
+    }
+
+    @Test
+    void addProduct_productIdAlreadyInOrder_throwsException(){
+        //given
+        Long orderId = 1L;
+        Long productId = 1L;
+
+        //when
+        //then
+        assertThrows(DuplicateOrderingOfProductException.class, () -> orderService.addProduct(orderId, productId));
+    }
+
+    @Test
+    void addProduct_invalidOrderId_throwsException(){
+        //given
+        Long orderId = -5L;
+        Long productId = 1L;
+
+        //when
+        //then
+        assertThrows(OrderNotFoundException.class, () -> orderService.addProduct(orderId, productId));
+    }
+
+    @Test
+    void addProduct_invalidProductId_throwsException(){
+        //given
+        Long orderId = 1L;
+        Long productId = -5L;
+
+        //when
+        //then
+        assertThrows(ProductNotFoundException.class, () -> orderService.addProduct(orderId, productId));
     }
 }

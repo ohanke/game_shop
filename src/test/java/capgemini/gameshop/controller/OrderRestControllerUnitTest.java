@@ -1,7 +1,10 @@
 package capgemini.gameshop.controller;
 
 import capgemini.gameshop.dto.OrderDto;
+import capgemini.gameshop.dto.ProductDto;
 import capgemini.gameshop.entity.OrderStatus;
+import capgemini.gameshop.entity.Product;
+import capgemini.gameshop.repository.ProductRepository;
 import capgemini.gameshop.service.OrderService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Optional;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -39,9 +45,12 @@ class OrderRestControllerUnitTest {
     @MockBean
     OrderService orderService;
 
+    @MockBean
+    ProductRepository productRepository;
+
     @Test
     @DisplayName("Test if List of Orders on the url has 200 status and type Json")
-    public void get_getAllAsJSON_success() throws Exception {
+    void get_getAllAsJSON_success() throws Exception {
         mockMvc.perform(get("/api/orders"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -51,7 +60,7 @@ class OrderRestControllerUnitTest {
     }
 
     @Test
-    public void get_validId_success() throws Exception {
+    void get_validId_success() throws Exception {
         mockMvc.perform(get("/api/orders/1"))
                 .andExpect(status().isOk());
 
@@ -59,7 +68,7 @@ class OrderRestControllerUnitTest {
     }
 
     @Test
-    public void create_validBody_success() throws Exception {
+    void create_validBody_success() throws Exception {
         OrderDto orderToSave = new OrderDto(1L, 50.50, OrderStatus.PROCESSING);
 
         when(orderService.create(any())).thenReturn(orderToSave);
@@ -75,7 +84,7 @@ class OrderRestControllerUnitTest {
     }
 
     @Test
-    public void update_validBody_success() throws Exception {
+    void update_validBody_success() throws Exception {
         OrderDto orderToBeUpdated = new OrderDto();
         orderToBeUpdated.setId(1L);
         OrderDto updateBody = new OrderDto(1L, 50.50, OrderStatus.PROCESSING);
@@ -93,7 +102,7 @@ class OrderRestControllerUnitTest {
     }
 
     @Test
-    public void delete_validId_success() throws Exception {
+    void delete_validId_success() throws Exception {
         OrderDto orderToDelete = new OrderDto();
         orderToDelete.setId(1L);
 
@@ -103,5 +112,16 @@ class OrderRestControllerUnitTest {
                 .andExpect(status().isNoContent());
 
         verify(orderService).delete(anyLong());
+    }
+
+    @Test
+    void addProduct_validParams_success() throws Exception {
+        when(orderService.addProduct(anyLong(), anyLong())).thenReturn(new OrderDto());
+
+        mockMvc.perform(get("/api/orders/1/add/2"))
+                        .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(orderService).addProduct(anyLong(), anyLong());
     }
 }
