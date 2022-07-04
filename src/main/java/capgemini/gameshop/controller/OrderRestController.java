@@ -44,7 +44,7 @@ public class OrderRestController {
         orderService.delete(id);
     }
 
-    @PutMapping("/{orderId}/add/{productId}")
+    @GetMapping("/{orderId}/add/{productId}")
     public OrderDto addProduct(@PathVariable Long orderId, @PathVariable Long productId){
         return orderService.addProduct(orderId, productId);
     }
