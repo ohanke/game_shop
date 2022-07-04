@@ -1,18 +1,14 @@
 package capgemini.gameshop.controller;
 
-import capgemini.gameshop.config.DataInitializer;
 import capgemini.gameshop.dto.OrderDto;
 import capgemini.gameshop.entity.OrderStatus;
 import capgemini.gameshop.service.OrderService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -66,7 +62,7 @@ class OrderRestControllerUnitTest {
     public void create_validBody_success() throws Exception {
         OrderDto orderToSave = new OrderDto(1L, 50.50, OrderStatus.PROCESSING);
 
-        when(orderService.save(any())).thenReturn(orderToSave);
+        when(orderService.create(any())).thenReturn(orderToSave);
 
         mockMvc.perform(post("/api/orders")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -75,7 +71,7 @@ class OrderRestControllerUnitTest {
                         .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(orderService).save(any());
+        verify(orderService).create(any());
     }
 
     @Test

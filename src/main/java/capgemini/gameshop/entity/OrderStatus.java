@@ -5,8 +5,8 @@ package capgemini.gameshop.entity;
  */
 
 public enum OrderStatus {
-    RECIEVED,
+    NEW,
     PROCESSING,
-    DELIVERED,
+    COMPLETED,
     CANCELLED
 }

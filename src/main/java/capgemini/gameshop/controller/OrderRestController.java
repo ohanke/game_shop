@@ -2,6 +2,7 @@ package capgemini.gameshop.controller;
 
 import capgemini.gameshop.dto.OrderDto;
 import capgemini.gameshop.service.OrderService;
+import capgemini.gameshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class OrderRestController {
 
     @PostMapping("")
     public OrderDto create(@Valid @RequestBody OrderDto orderDto) {
-        return orderService.save(orderDto);
+        return orderService.create(orderDto);
     }
 
     @PutMapping("/{id}")
@@ -41,5 +42,10 @@ public class OrderRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
         orderService.delete(id);
+    }
+
+    @PutMapping("/{orderId}/add/{productId}")
+    public OrderDto addProduct(@PathVariable Long orderId, @PathVariable Long productId){
+        return orderService.addProduct(orderId, productId);
     }
 }

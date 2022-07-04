@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This entity is responsible for storing information about an Order.
@@ -42,4 +43,17 @@ public class Order extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products = new HashSet<>();
 
+    public Set<Long> getProductsIdOfOrder() {
+        return products
+                .stream()
+                .map(BaseEntity::getId)
+                .collect(Collectors.toSet());
+    }
+
+    public double getTotalValueOfProducts(){
+        return products
+                .stream()
+                .mapToDouble(Product::getPrice)
+                .sum();
+    }
 }
