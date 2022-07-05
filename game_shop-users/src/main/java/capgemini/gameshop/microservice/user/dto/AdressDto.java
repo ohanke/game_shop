@@ -1,7 +1,6 @@
-package capgemini.gameshop.dto;
+package capgemini.gameshop.microservice.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -31,18 +31,22 @@ public class AdressDto {
 
     private Long id;
 
+    @NotNull
     private Long userId;
 
     @NotEmpty
     @Size(max = 100, min = 3)
     private String country;
 
+    @NotEmpty
+    @Size(min = 3)
     private String street;
 
     private String state;
 
     @NotEmpty
     private String city;
+
 
     @Size(max = 10, min = 4)
     private String zip;
