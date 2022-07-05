@@ -10,7 +10,9 @@ import capgemini.gameshop.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.Set;
 
 import static capgemini.gameshop.entity.Attribute.*;
 import static capgemini.gameshop.entity.Category.*;
@@ -20,6 +22,7 @@ import static capgemini.gameshop.entity.Category.*;
  */
 @Component
 @AllArgsConstructor
+@Transactional
 public class DataInitializer {
 
     private final static double VAT = 1.23d; //nett to gross parameter (based on polish tax value of 23%)

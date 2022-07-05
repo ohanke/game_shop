@@ -4,8 +4,8 @@ import capgemini.gameshop.dto.OrderDto;
 import capgemini.gameshop.entity.Order;
 import capgemini.gameshop.entity.OrderStatus;
 import capgemini.gameshop.entity.Product;
-import capgemini.gameshop.exception.OrderNotFoundException;
 import capgemini.gameshop.exception.DuplicateOrderingOfProductException;
+import capgemini.gameshop.exception.OrderNotFoundException;
 import capgemini.gameshop.exception.ProductNotFoundException;
 import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.repository.OrderRepository;
@@ -83,6 +83,9 @@ public class OrderService {
         }
     }
     public void delete(Long id) {
+        Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
+        existingOrder.getProducts().forEach(product -> product.getOrders().remove(existingOrder));
+        productRepository.saveAll(existingOrder.getProducts());
         orderRepository.deleteById(id);
     }
 

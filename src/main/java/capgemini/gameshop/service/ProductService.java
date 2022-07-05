@@ -3,6 +3,7 @@ package capgemini.gameshop.service;
 import capgemini.gameshop.dto.ProductDto;
 import capgemini.gameshop.entity.Product;
 import capgemini.gameshop.exception.ProductNotFoundException;
+import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -26,10 +27,13 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    private final OrderRepository orderRepository;
+
     private final ModelMapper mapper;
 
     /**
      * Converts Product into ProductDto
+     *
      * @param entity
      * @return DTO
      */
@@ -73,7 +77,11 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
+    @Transactional
     public void delete(Long id) {
+        Product existingProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        existingProduct.getOrders().forEach(order -> order.getProducts().remove(existingProduct));
+        orderRepository.saveAll(existingProduct.getOrders());
         productRepository.deleteById(id);
     }
 
