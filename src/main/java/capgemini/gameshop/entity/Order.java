@@ -37,7 +37,7 @@ public class Order extends BaseEntity{
     private OrderStatus orderStatus;
 
     //TODO add Cascade type persis - and related add/remove methods for product
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "order_product",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))

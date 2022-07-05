@@ -1,12 +1,9 @@
 package capgemini.gameshop.controller;
 
 import capgemini.gameshop.dto.OrderDto;
-import capgemini.gameshop.dto.ProductDto;
-import capgemini.gameshop.entity.Attribute;
-import capgemini.gameshop.entity.Category;
 import capgemini.gameshop.entity.OrderStatus;
 import capgemini.gameshop.service.OrderService;
-import org.junit.jupiter.api.Assertions;
+import capgemini.gameshop.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -18,8 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
-
-import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -40,6 +35,9 @@ public class OrderRestControllerIntegrationTest {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    ProductService productService;
+
     @Test
     void get_listOfAllOrders() throws Exception {
         mockMvc.perform(get("/api/orders"))
@@ -48,7 +46,7 @@ public class OrderRestControllerIntegrationTest {
     }
 
     @Test
-    void get_validId_singleOrder() throws Exception{
+    void get_validId_singleOrder() throws Exception {
         //given
         JsonContent<OrderDto> order = orderTester.write(orderService.findById(1L));
 
@@ -89,11 +87,13 @@ public class OrderRestControllerIntegrationTest {
     }
 
     @Test
-    void delete_validId_success() throws Exception{
+    void delete_validId_success() throws Exception {
         //given
-        OrderDto orderToDelete = orderService.create(new OrderDto(1L, 50.50, OrderStatus.PROCESSING));
+        Long orderId = 1L;
+        Long productId = 2L;
+        orderService.addProduct(orderId, productId);
 
-        mockMvc.perform(delete("/api/orders/" + orderToDelete.getId()))
+        mockMvc.perform(delete("/api/orders/" + orderId))
                 .andExpect(status().isNoContent());
     }
 

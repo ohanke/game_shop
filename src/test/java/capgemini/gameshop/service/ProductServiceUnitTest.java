@@ -5,6 +5,7 @@ import capgemini.gameshop.entity.Attribute;
 import capgemini.gameshop.entity.Category;
 import capgemini.gameshop.entity.Product;
 import capgemini.gameshop.exception.ProductNotFoundException;
+import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,12 +24,15 @@ import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceUnitTest {
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private OrderRepository orderRepository;
     @Mock
     private ModelMapper modelMapper;
 
@@ -37,7 +41,7 @@ public class ProductServiceUnitTest {
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productRepository, modelMapper);
+        productService = new ProductService(productRepository, orderRepository, modelMapper);
     }
 
     @Test
@@ -133,13 +137,15 @@ public class ProductServiceUnitTest {
 
     @Test
     @Disabled
-    void update_validProduct_success(){
+    void update_validProduct_success() {
 
     }
+
+    @Disabled
     @Test
-    void delete_validId_success(){
+    void delete_validId_success() {
         //given
-        Long id = 4L;
+        Long id = 1L;
 
         //when
         productService.delete(id);
