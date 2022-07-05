@@ -37,6 +37,10 @@ public class UserDto {
     @Size(min = 8, max = 32)
     private String password;
 
+
+    @NotEmpty
+    private String gender;
+
     public UserDto(String firstName, String lastName, String email, String password) {
         this.id = null;
         this.firstName = firstName;
