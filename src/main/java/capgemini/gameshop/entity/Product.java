@@ -28,7 +28,6 @@ public class Product extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    //TODO add persis related add/remove methods for orders
     @JsonIgnore
     @ManyToMany(mappedBy = "products")
     private Set<Order> orders = new HashSet<>();
