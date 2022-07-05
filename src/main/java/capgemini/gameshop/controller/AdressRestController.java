@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api.adresses")
+@RequestMapping("/api/adresses")
 @RequiredArgsConstructor
 public class AdressRestController {
 
@@ -33,7 +33,7 @@ public class AdressRestController {
     }
 
 
-    @PostMapping()
+    @PostMapping(value = "/")
     public AdressDto create(@Valid @RequestBody AdressDto adressDto){
         return adressService.save(adressDto);
     }

@@ -30,8 +30,8 @@ import javax.validation.constraints.Size;
 public class AdressDto {
 
     private Long id;
-    @JsonIgnore
-    private UserDto user;
+
+    private Long userid;
 
     @NotEmpty
     @Size(max = 100, min = 3)
