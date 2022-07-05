@@ -37,8 +37,7 @@ public class User extends BaseEntity{
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String gender;
+
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL)
