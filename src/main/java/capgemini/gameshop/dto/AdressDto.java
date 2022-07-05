@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 
 /**
  * DTO class for entities of Adress
@@ -27,18 +30,23 @@ import lombok.Setter;
 public class AdressDto {
 
     private Long id;
-
     @JsonIgnore
     private UserDto user;
 
+    @NotEmpty
+    @Size(max = 100, min = 3)
     private String country;
+
 
     private String street;
 
     private String state;
 
+    @NotEmpty
     private String city;
 
+
+    @Size(max = 10, min = 4)
     private String zip;
 
     public AdressDto(String country, String address, String state, String city, String zip) {
