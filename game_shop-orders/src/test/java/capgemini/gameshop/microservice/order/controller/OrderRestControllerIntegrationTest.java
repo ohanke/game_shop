@@ -61,7 +61,7 @@ public class OrderRestControllerIntegrationTest {
     @Test
     void create_validBody_success() throws Exception{
         //given
-        OrderDto orderToSave = new OrderDto(1L, 50.50, OrderStatus.PROCESSING);
+        OrderDto orderToSave = new OrderDto(1L, 50.50, "PROCESSING");
 
         //when
         //then
@@ -76,7 +76,7 @@ public class OrderRestControllerIntegrationTest {
     void update_validBody_success() throws Exception{
         //given
         Long id = 1L;
-        OrderDto updateBody = new OrderDto(1L, 50.50, OrderStatus.PROCESSING);
+        OrderDto updateBody = new OrderDto(1L, 50.50, "PROCESSING");
 
         //when
         mockMvc.perform(put("/api/orders/" + id)

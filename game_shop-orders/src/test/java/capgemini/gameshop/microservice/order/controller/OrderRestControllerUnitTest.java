@@ -64,7 +64,7 @@ class OrderRestControllerUnitTest {
 
     @Test
     void create_validBody_success() throws Exception {
-        OrderDto orderToSave = new OrderDto(1L, 50.50, OrderStatus.PROCESSING);
+        OrderDto orderToSave = new OrderDto(1L, 50.50, "PROCESSING");
 
         when(orderService.create(any())).thenReturn(orderToSave);
 
@@ -82,7 +82,7 @@ class OrderRestControllerUnitTest {
     void update_validBody_success() throws Exception {
         OrderDto orderToBeUpdated = new OrderDto();
         orderToBeUpdated.setId(1L);
-        OrderDto updateBody = new OrderDto(1L, 50.50, OrderStatus.PROCESSING);
+        OrderDto updateBody = new OrderDto(1L, 50.50, "PROCESSING");
 
         when(orderService.findById(anyLong())).thenReturn(orderToBeUpdated);
 

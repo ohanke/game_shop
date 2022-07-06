@@ -2,10 +2,14 @@ package capgemini.gameshop.microservice.order.service;
 
 import capgemini.gameshop.microservice.order.dto.ProductDto;
 import capgemini.gameshop.microservice.order.exception.ProductNotFoundException;
+import capgemini.gameshop.microservice.order.model.Attribute;
+import capgemini.gameshop.microservice.order.model.Category;
 import capgemini.gameshop.microservice.order.model.Product;
 import capgemini.gameshop.microservice.order.repository.OrderRepository;
 import capgemini.gameshop.microservice.order.repository.ProductRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,8 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Setter
+@Getter
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -87,8 +93,11 @@ public class ProductService {
 
     private ProductDto updateFields(ProductDto productDto, Product product) {
         product.setName(productDto.getName());
-        product.setCategory(productDto.getCategory());
-        product.setAttributes(productDto.getAttributes());
+        product.setCategory(Category.valueOf(productDto.getCategory()));
+        for (String attribute: productDto.getAttributes()) {
+            product.getAttributes().add(Attribute.valueOf(attribute));
+
+        }
         product.setPrice(productDto.getPrice());
         return convertToDTO(productRepository.save(product));
     }

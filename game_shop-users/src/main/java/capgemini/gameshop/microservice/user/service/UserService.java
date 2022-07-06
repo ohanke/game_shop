@@ -1,6 +1,7 @@
 package capgemini.gameshop.microservice.user.service;
 
 import capgemini.gameshop.microservice.user.dto.UserDto;
+import capgemini.gameshop.microservice.user.event.UserRegisterEvent;
 import capgemini.gameshop.microservice.user.exception.EmailExistException;
 import capgemini.gameshop.microservice.user.exception.UserNotFoundException;
 import capgemini.gameshop.microservice.user.model.User;
@@ -8,9 +9,11 @@ import capgemini.gameshop.microservice.user.repository.UserRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +32,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final ModelMapper mapper;
+
+    private final KafkaTemplate<Long, UserRegisterEvent> kafkaTemplate;
 
     /**
      * Method that converts User object to UserDto object using ModelMapper
@@ -83,7 +88,11 @@ public class UserService {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new EmailExistException(userDto.getEmail());
         } else {
-            return convertToDTO(userRepository.save(mapper.map(userDto, User.class)));
+            userDto.setCreatedAt(LocalDateTime.now());
+            UserDto savedUser = convertToDTO(userRepository.save(mapper.map(userDto, User.class)));
+            kafkaTemplate.send("users", savedUser.getId(),
+                    new UserRegisterEvent(savedUser.getId(), savedUser.getCreatedAt()));
+            return savedUser;
         }
     }
 
@@ -106,8 +115,9 @@ public class UserService {
         existingUser.setFirstName(userDto.getFirstName());
         existingUser.setLastName(userDto.getLastName());
         existingUser.setPassword(userDto.getPassword());
+        existingUser.setLastModifiedAt(LocalDateTime.now());
 
-        return mapper.map(existingUser, UserDto.class);
+        return convertToDTO(userRepository.save(existingUser));
     }
 
     /**
@@ -119,29 +129,5 @@ public class UserService {
         if (userRepository.findById(id).isEmpty()) {
             throw new UserNotFoundException(id);
         } else userRepository.deleteById(id);
-    }
-
-    /**
-     * Method that is used to update user in repository. Finds wich fields are changed (need to be change - those NolNULL) and saves it a user repository
-     *
-     * @param userDto - userDto object that contains fields that need to be change
-     * @param user    - user object that will be change
-     * @return - return UserDto object
-     */
-    private UserDto updateFields(@NonNull UserDto userDto, User user) {
-        if (userDto.getEmail() != null && !userDto.getEmail().equals(user.getEmail())) {
-            if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-                throw new EmailExistException(userDto.getEmail());
-            } else {
-                user.setEmail(userDto.getEmail());
-            }
-        }
-        if (userDto.getFirstName() != null)
-            user.setFirstName(userDto.getFirstName());
-        if (userDto.getLastName() != null)
-            user.setLastName(userDto.getLastName());
-        if (userDto.getPassword() != null)
-            user.setPassword(userDto.getPassword());
-        return convertToDTO(userRepository.save(user));
     }
 }

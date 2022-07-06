@@ -1,13 +1,17 @@
 package capgemini.gameshop.microservice.user.service;
 
 import capgemini.gameshop.microservice.user.dto.AdressDto;
+import capgemini.gameshop.microservice.user.event.AdressCreationEvent;
+import capgemini.gameshop.microservice.user.event.UserRegisterEvent;
 import capgemini.gameshop.microservice.user.exception.AdressNotFoundException;
 import capgemini.gameshop.microservice.user.model.Adress;
 import capgemini.gameshop.microservice.user.repository.AdressRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +29,8 @@ public class AdressService {
     private AdressRepository adressRepository;
 
     private ModelMapper mapper;
+
+    private final KafkaTemplate<Long, AdressCreationEvent> kafkaTemplate;
 
 
 
@@ -56,8 +62,13 @@ public class AdressService {
     }
 
     public AdressDto create(AdressDto adressDto) {
-
-            return convertToDTO(adressRepository.save(mapper.map(adressDto, Adress.class)));
+        adressDto.setCreatedAt(LocalDateTime.now());
+        AdressDto savedAdress = convertToDTO(adressRepository.save(mapper.map(adressDto, Adress.class)));
+        kafkaTemplate.send("adresses", savedAdress.getId(),
+                new AdressCreationEvent(savedAdress.getId(),
+                        savedAdress.getUserId(),
+                        savedAdress.getCreatedAt()));
+        return savedAdress;
         }
 
     public void update(Long id, AdressDto adressDto) {
@@ -78,12 +89,14 @@ public class AdressService {
             adress.setStreet(adressDto.getStreet());
             adress.setState(adressDto.getState());
             adress.setZip(adressDto.getZip());
+            adress.setLastModifiedAt(LocalDateTime.now());
             return convertToDTO(adressRepository.save(adress));
         }
 
 
     public AdressDto save(AdressDto adressDto) {
         Adress adressToSave = convertToEntity(adressDto);
+        adressToSave.setCreatedAt(LocalDateTime.now());
         Adress savedAdress = adressRepository.save(adressToSave);
         return convertToDTO(savedAdress);
     }

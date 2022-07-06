@@ -55,7 +55,7 @@ public class OrderService {
 
     public OrderDto create(OrderDto orderDto) {
         orderDto.setTotalValue(0);
-        orderDto.setOrderStatus(OrderStatus.NEW);
+        orderDto.setOrderStatus("NEW");
         Order savedOrder = orderRepository.save(convertToEntity(orderDto));
         return convertToDTO(savedOrder);
     }
@@ -90,7 +90,7 @@ public class OrderService {
     private OrderDto updateFields(OrderDto orderDto, Order order) {
         order.setUserId(orderDto.getUserId());
         order.setTotalValue(orderDto.getTotalValue());
-        order.setOrderStatus(orderDto.getOrderStatus());
+        order.setOrderStatus(OrderStatus.valueOf(orderDto.getOrderStatus()));
         return convertToDTO(orderRepository.save(order));
     }
 }

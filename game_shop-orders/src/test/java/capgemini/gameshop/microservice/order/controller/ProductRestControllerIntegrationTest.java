@@ -57,7 +57,7 @@ public class ProductRestControllerIntegrationTest {
     @Test
     void create_validBody_success() throws Exception{
         ProductDto productToSave = new ProductDto(
-                "Flock", Category.ACTION, Set.of(Attribute.TEEN), 10.55);
+                "Flock", "ACTION", Set.of("TEEN"), 10.55);
 
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -69,7 +69,7 @@ public class ProductRestControllerIntegrationTest {
     @Test
     void update_validBody_success() throws Exception {
         ProductDto updateBody = new ProductDto(
-                "Flock", Category.ACTION, Set.of(Attribute.TEEN), 10.55);
+                "Flock", "ACTION", Set.of("TEEN"), 10.55);
 
         mockMvc.perform(put("/api/products/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -82,7 +82,7 @@ public class ProductRestControllerIntegrationTest {
     void delete_validId_success() throws Exception {
         //given
         ProductDto productToDelete = productService.save(new ProductDto(
-                "Flock", Category.ACTION, Set.of(Attribute.TEEN), 10.55));
+                "Flock", "ACTION", Set.of("TEEN"), 10.55));
 
         //when
         //then
