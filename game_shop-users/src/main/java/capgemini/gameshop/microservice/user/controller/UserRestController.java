@@ -23,7 +23,7 @@ public class UserRestController {
      *
      * @return - list of user
      */
-    @GetMapping("/")
+    @GetMapping("")
     public List<UserDto> getUsers() {
         return userService.findAll();
     }
@@ -56,7 +56,7 @@ public class UserRestController {
      * @param userDto - the user to create
      * @return - the created product, or errors status FORBIDDEN on existing userDto eamil value in database
      */
-    @PostMapping(value = "/")
+    @PostMapping("")
     public UserDto create(@Valid @RequestBody UserDto userDto) {
         return userService.create(userDto);
     }
