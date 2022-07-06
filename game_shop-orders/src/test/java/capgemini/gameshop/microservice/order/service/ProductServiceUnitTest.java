@@ -106,8 +106,8 @@ public class ProductServiceUnitTest {
         Long id = 501L;
         ProductDto dto = new ProductDto();
         dto.setName("Flock");
-        dto.setCategory(Category.ACTION);
-        dto.setAttributes(Set.of(Attribute.TEEN));
+        dto.setCategory("ACTION");
+        dto.setAttributes(Set.of("TEEN"));
         dto.setPrice(50.0);
 
         Product productToSave = new Product();

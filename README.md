@@ -25,7 +25,7 @@
 3. Get user by id - GET/api/users/id/{id}
 4. Get user by mail - GET/api/users/email/{email}
 5. Get users - GET/api/users
-6. Delete user - DELETE/api/users/delete/{id}
+6. Delete user - DELETE/api/users/{id}
 
 ### Product
 1. Create product - POST/api/products {"name": "Flock","category": "HORROR","attributes": [3, 2],"price": 10.50}
@@ -43,4 +43,8 @@
 6. Add product - GET/api/orders{orderId}/add/{productId}
 
 ### Adress
-1. Get adresses - GET/api/adresses
+1. Create adress - POST/api/adresses {"country": "Pakistan","street": "Street","state": "State","city": "City","zip": "89-123"}
+2. Update adress - PUT/api/adresses {"country": "Pakistan","street": "Street","state": "State","city": "City","zip": "12-987"}
+3. Get adress - GET/api/adresses/{id}
+4. Get adresses - GET/api/adresses
+5. Delete adress - DELETE/api/adresses/{id}

@@ -79,7 +79,7 @@ public class UserRestController {
      * @param id - the ID of user to delete
      *           Throws errors status NOT_FOUND if user not found in database
      */
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         userService.delete(id);

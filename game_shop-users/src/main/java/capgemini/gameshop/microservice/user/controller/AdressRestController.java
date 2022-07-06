@@ -17,7 +17,7 @@ public class AdressRestController {
 
     private final AdressService adressService;
 
-    @GetMapping("/")
+    @GetMapping()
     public List<AdressDto> getAdresses(){
         return adressService.findAll();
     }
@@ -33,7 +33,7 @@ public class AdressRestController {
     }
 
 
-    @PostMapping(value = "/")
+    @PostMapping()
     public AdressDto create(@Valid @RequestBody AdressDto adressDto){
         return adressService.save(adressDto);
     }
@@ -45,7 +45,7 @@ public class AdressRestController {
         adressService.update(id, adressDto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         adressService.delete(id);
