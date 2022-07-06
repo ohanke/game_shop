@@ -54,17 +54,12 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products = new HashSet<>();
 
-    public Set<Long> getProductsIdOfOrder() {
-        return products
-                .stream()
-                .map(Product::getId)
-                .collect(Collectors.toSet());
-    }
-
     public double getTotalValueOfProducts(){
         return products
                 .stream()
                 .mapToDouble(Product::getPrice)
                 .sum();
     }
+
+
 }

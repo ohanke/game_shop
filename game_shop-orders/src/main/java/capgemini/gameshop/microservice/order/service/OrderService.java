@@ -71,8 +71,8 @@ public class OrderService {
                 .orElseThrow(() -> new ProductNotFoundException(productId));
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
-        if (order.getProductsIdOfOrder().contains(productId)){
-            throw new DuplicateOrderingOfProductException(productId);
+        if (order.getProducts().contains(product)){
+            throw new DuplicateOrderingOfProductException(orderId ,productId);
         } else {
             order.getProducts().add(product);
             order.setOrderStatus(OrderStatus.PROCESSING);
