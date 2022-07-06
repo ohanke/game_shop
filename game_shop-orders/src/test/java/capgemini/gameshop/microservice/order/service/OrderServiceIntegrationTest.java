@@ -30,7 +30,7 @@ class OrderServiceIntegrationTest {
         OrderDto orderDto = new OrderDto();
         orderDto.setUserId(1L);
         orderDto.setTotalValue(500);
-        orderDto.setOrderStatus(OrderStatus.NEW);
+        orderDto.setOrderStatus("NEW");
         orderService.create(orderDto);
         //when
 
@@ -79,7 +79,7 @@ class OrderServiceIntegrationTest {
     void update_allFieldsValid_success(){
         //given
         Long id = 1L;
-        OrderDto updateBody = new OrderDto(1L, 50.50, OrderStatus.PROCESSING);
+        OrderDto updateBody = new OrderDto(1L, 50.50, "PROCESSING");
 
         //when
         orderService.update(id, updateBody);

@@ -6,6 +6,8 @@
 	<modules>
 		<module>game_shop-users</module>
 		<module>game_shop-orders</module>
+		<module>game_shop-users-client</module>
+		<module>game_shop-orders-client</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>

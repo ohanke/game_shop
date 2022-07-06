@@ -27,8 +27,8 @@ class ProductServiceIntegrationTest {
         //given
         ProductDto productDto = new ProductDto();
         productDto.setName("Flock");
-        productDto.setCategory(Category.ACTION);
-        productDto.setAttributes(Set.of(Attribute.TEEN));
+        productDto.setCategory("ACTION");
+        productDto.setAttributes(Set.of("TEEN"));
         productDto.setPrice(50.0);
         productService.save(productDto);
 
@@ -66,8 +66,8 @@ class ProductServiceIntegrationTest {
         //given
         ProductDto productDto = new ProductDto();
         productDto.setName("Flock");
-        productDto.setCategory(Category.ACTION);
-        productDto.setAttributes(Set.of(Attribute.TEEN));
+        productDto.setCategory("ACTION");
+        productDto.setAttributes(Set.of("TEEN"));
         productDto.setPrice(50.0);
 
         //when
@@ -97,7 +97,7 @@ class ProductServiceIntegrationTest {
         //given
         Long id = 1L;
         ProductDto productDto = new ProductDto(
-                "Flock", Category.ACTION, Set.of(Attribute.TEEN), 50.0);
+                "Flock", "ACTION", Set.of("TEEN"), 50.0);
 
         //when
         productService.update(id, productDto);

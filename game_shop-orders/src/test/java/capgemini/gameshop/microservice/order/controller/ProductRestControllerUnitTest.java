@@ -64,7 +64,7 @@ class ProductRestControllerUnitTest {
     @Test
     public void create_validBody_success() throws Exception{
         ProductDto productToSave = new ProductDto(
-                "Flock", Category.ACTION, Set.of(Attribute.TEEN), 10.55);
+                "Flock", "ACTION", Set.of("TEEN"), 10.55);
 
         when(productService.save(any())).thenReturn(productToSave);
 
@@ -83,7 +83,7 @@ class ProductRestControllerUnitTest {
         ProductDto productToBeUpdated = new ProductDto();
         productToBeUpdated.setId(1L);
         ProductDto updateBody = new ProductDto(
-                "Flock", Category.ACTION, Set.of(Attribute.TEEN), 10.55);
+                "Flock", "ACTION", Set.of("TEEN"), 10.55);
 
         when(productService.findById(anyLong())).thenReturn(productToBeUpdated);
 

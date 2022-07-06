@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 /**
  * This object initialize data for database for testing porpoise
@@ -63,6 +64,7 @@ public class DataInitializer {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
+        user.setCreatedAt(LocalDateTime.now());
         userRepository.save(user);
     }
 
@@ -84,6 +86,7 @@ public class DataInitializer {
         adress.setState(state);
         adress.setCity(city);
         adress.setZip(zipCode);
+        adress.setCreatedAt(LocalDateTime.now());
         adressRepository.save(adress);
     }
 
