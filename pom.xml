@@ -8,6 +8,7 @@
 		<module>game_shop-orders</module>
 		<module>game_shop-users-client</module>
 		<module>game_shop-orders-client</module>
+		<module>game_shop-notifications</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -16,8 +17,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>game_shop</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>game_shop</name>
+	<version>0.0.1-SNAPSHOT</version>	<name>game_shop</name>
 	<description>Capgemini practical project</description>
 	<properties>
 		<java.version>18</java.version>
