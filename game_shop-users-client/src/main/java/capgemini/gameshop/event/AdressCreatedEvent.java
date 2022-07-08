@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdressCreationEvent {
+public class AdressCreatedEvent {
     private Long id;
 
     private Long userId;
