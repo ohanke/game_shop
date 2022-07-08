@@ -1,7 +1,7 @@
 package capgemini.gameshop.service;
 
 import capgemini.gameshop.dto.UserDto;
-import capgemini.gameshop.event.UserRegisterEvent;
+import capgemini.gameshop.event.UserRegisteredEvent;
 import capgemini.gameshop.exception.EmailExistException;
 import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.model.User;
@@ -32,7 +32,7 @@ public class UserService {
 
     private final ModelMapper mapper;
 
-    private final KafkaTemplate<Long, UserRegisterEvent> kafkaTemplate;
+    private final KafkaTemplate<Long, UserRegisteredEvent> kafkaTemplate;
 
     /**
      * Method that converts User object to UserDto object using ModelMapper
@@ -90,7 +90,7 @@ public class UserService {
             userDto.setCreatedAt(LocalDateTime.now());
             UserDto savedUser = convertToDTO(userRepository.save(mapper.map(userDto, User.class)));
             kafkaTemplate.send("users", savedUser.getId(),
-                    new UserRegisterEvent(savedUser.getId(), savedUser.getCreatedAt()));
+                    new UserRegisteredEvent(savedUser.getId(), savedUser.getCreatedAt()));
             return savedUser;
         }
     }

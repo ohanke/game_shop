@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegisterEvent {
+public class UserRegisteredEvent {
 
     private Long userId;
 

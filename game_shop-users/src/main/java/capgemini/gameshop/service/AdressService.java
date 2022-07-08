@@ -1,7 +1,7 @@
 package capgemini.gameshop.service;
 
 import capgemini.gameshop.dto.AdressDto;
-import capgemini.gameshop.event.AdressCreationEvent;
+import capgemini.gameshop.event.AdressCreatedEvent;
 import capgemini.gameshop.exception.AdressNotFoundException;
 import capgemini.gameshop.model.Adress;
 import capgemini.gameshop.repository.AdressRepository;
@@ -29,9 +29,7 @@ public class AdressService {
 
     private ModelMapper mapper;
 
-    private final KafkaTemplate<Long, AdressCreationEvent> kafkaTemplate;
-
-
+    private final KafkaTemplate<Long, AdressCreatedEvent> kafkaTemplate;
 
     private AdressDto convertToDTO(Adress entity) {
         return mapper.map(entity, AdressDto.class);
@@ -64,7 +62,7 @@ public class AdressService {
         adressDto.setCreatedAt(LocalDateTime.now());
         AdressDto savedAdress = convertToDTO(adressRepository.save(mapper.map(adressDto, Adress.class)));
         kafkaTemplate.send("adresses", savedAdress.getId(),
-                new AdressCreationEvent(savedAdress.getId(),
+                new AdressCreatedEvent(savedAdress.getId(),
                         savedAdress.getUserId(),
                         savedAdress.getCreatedAt()));
         return savedAdress;

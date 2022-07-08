@@ -48,7 +48,6 @@ public class AdressDto {
     @NotEmpty
     private String city;
 
-
     @Size(max = 10, min = 4)
     private String zip;
 
