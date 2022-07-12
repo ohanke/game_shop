@@ -1,9 +1,6 @@
 package capgemini.gameshop.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -19,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "adress", indexes = {
         @Index(name = "adress_cnt_ct_index", columnList = "country, city"),
         @Index(name = "adress_zip_index", columnList = "zip")})

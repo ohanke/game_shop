@@ -1,6 +1,6 @@
 package capgemini.gameshop.service;
 
-import capgemini.gameshop.dto.OrderDto;
+import capgemini.gameshop.orders.dto.OrderDto;
 import capgemini.gameshop.exception.DuplicateOrderingOfProductException;
 import capgemini.gameshop.exception.OrderNotFoundException;
 import capgemini.gameshop.exception.ProductNotFoundException;

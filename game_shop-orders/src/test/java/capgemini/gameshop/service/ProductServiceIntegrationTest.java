@@ -1,6 +1,6 @@
 package capgemini.gameshop.service;
 
-import capgemini.gameshop.dto.ProductDto;
+import capgemini.gameshop.orders.dto.ProductDto;
 import capgemini.gameshop.exception.ProductNotFoundException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

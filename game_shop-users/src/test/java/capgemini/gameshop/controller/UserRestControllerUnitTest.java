@@ -1,6 +1,6 @@
 package capgemini.gameshop.controller;
 
-import capgemini.gameshop.dto.UserDto;
+import capgemini.gameshop.users.dto.UserDto;
 import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.service.UserService;
 import org.junit.jupiter.api.DisplayName;

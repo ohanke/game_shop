@@ -1,6 +1,6 @@
 package capgemini.gameshop.service;
 
-import capgemini.gameshop.dto.AdressDto;
+import capgemini.gameshop.users.dto.AdressDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

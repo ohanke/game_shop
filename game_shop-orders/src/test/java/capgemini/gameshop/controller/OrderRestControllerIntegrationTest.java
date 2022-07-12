@@ -1,6 +1,6 @@
 package capgemini.gameshop.controller;
 
-import capgemini.gameshop.dto.OrderDto;
+import capgemini.gameshop.orders.dto.OrderDto;
 import capgemini.gameshop.service.OrderService;
 import capgemini.gameshop.service.ProductService;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package capgemini.gameshop.event;
+package capgemini.gameshop.users.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +11,11 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegisteredEvent {
+public class AdressCreatedEvent implements IntegrationEvent {
+
+    private Long id;
 
     private Long userId;
 
     private LocalDateTime createdAt;
-
 }
