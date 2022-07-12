@@ -1,6 +1,6 @@
 package capgemini.gameshop.controller;
 
-import capgemini.gameshop.dto.AdressDto;
+import capgemini.gameshop.users.dto.AdressDto;
 import capgemini.gameshop.service.AdressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

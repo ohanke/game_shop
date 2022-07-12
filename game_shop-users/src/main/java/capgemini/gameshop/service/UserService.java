@@ -1,7 +1,9 @@
 package capgemini.gameshop.service;
 
-import capgemini.gameshop.dto.UserDto;
-import capgemini.gameshop.event.UserRegisteredEvent;
+import capgemini.gameshop.users.dto.UserDto;
+import capgemini.gameshop.users.event.IntegrationEvent;
+import capgemini.gameshop.users.event.UserDeletedEvent;
+import capgemini.gameshop.users.event.UserRegisteredEvent;
 import capgemini.gameshop.exception.EmailExistException;
 import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.model.User;
@@ -32,7 +34,7 @@ public class UserService {
 
     private final ModelMapper mapper;
 
-    private final KafkaTemplate<Long, UserRegisteredEvent> kafkaTemplate;
+    private final KafkaTemplate<Long, IntegrationEvent> kafkaTemplate;
 
     /**
      * Method that converts User object to UserDto object using ModelMapper
@@ -120,13 +122,20 @@ public class UserService {
     }
 
     /**
-     * Method that deletes user from database
+     * Method that makes user inactive (change active flag to FALSE) so other microservices can still find it but wil know it's "deleted"
      *
-     * @param id - Long ID field to find user entity that will be deleted
+     * @param id - Long ID field to find user entity that will be set active as FALSE
      */
     public void delete(Long id) {
         if (userRepository.findById(id).isEmpty()) {
             throw new UserNotFoundException(id);
-        } else userRepository.deleteById(id);
+        } else {
+            User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+            user.setActive(false);
+            user.setLastModifiedAt(LocalDateTime.now());
+            userRepository.save(user);
+            kafkaTemplate.send("users", user.getId(),
+                    new UserDeletedEvent(user.getId(), user.getLastModifiedAt()));
+        }
     }
 }

@@ -1,0 +1,22 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: notification
+    
+  kafka:
+    consumer:
+      properties:
+        spring.json.trusted.packages: "*"
+      bootstrap-servers:
+        - localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+      group-id: app
+      auto-offset-reset: earliest
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka

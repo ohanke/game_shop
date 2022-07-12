@@ -1,9 +1,6 @@
 package capgemini.gameshop.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -22,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "users", indexes = {
         @Index(name = "users_fn_ln_index", columnList = "firstName, lastName"),
         @Index(name = "users_email_index", columnList = "email")})
@@ -49,14 +47,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private boolean active;
+
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL)
     private List<Adress> adresses = new ArrayList<>();
-
-//
-//    @OneToMany(mappedBy = "user",
-//            cascade = CascadeType.ALL)
-//    private List<Order> orders = new ArrayList<>();
 
 }

@@ -8,8 +8,8 @@ import capgemini.gameshop.repository.AdressRepository;
 import capgemini.gameshop.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 /**
@@ -59,12 +59,14 @@ public class DataInitializer {
      * @param password - user's login password
      */
     public void createUser(String firstName, String lastName, String email, String password){
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setCreatedAt(LocalDateTime.now());
+        User user = User.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .password(password)
+                .createdAt(LocalDateTime.now())
+                .active(true)
+                .build();
         userRepository.save(user);
     }
 
@@ -78,15 +80,16 @@ public class DataInitializer {
      * @param zipCode
      */
     public void createAdress(String email, String country, String street, String state, String city, String zipCode){
-        Adress adress = new Adress();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
-        adress.setUser(user);
-        adress.setCountry(country);
-        adress.setStreet(street);
-        adress.setState(state);
-        adress.setCity(city);
-        adress.setZip(zipCode);
-        adress.setCreatedAt(LocalDateTime.now());
+        Adress adress = Adress.builder()
+                .user(user)
+                .country(country)
+                .street(street)
+                .state(state)
+                .city(city)
+                .zip(zipCode)
+                .createdAt(LocalDateTime.now())
+                .build();
         adressRepository.save(adress);
     }
 

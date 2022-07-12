@@ -48,10 +48,10 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-#      KAFKA_JMX_PORT: 9101
-#      KAFKA_JMX_HOSTNAME: localhost
-#      KAFKA_NODE_ID: 1
-#      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_NODE_ID: 1
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
     volumes:
       - ./update_run.sh:/tmp/update_run.sh

@@ -1,4 +1,4 @@
-package capgemini.gameshop.event;
+package capgemini.gameshop.orders.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,12 +7,12 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class AdressCreatedEvent {
-    private Long id;
+@NoArgsConstructor
+public class OrderCreatedEvent implements IntegrationEvent {
+    private Long orderId;
 
     private Long userId;
 

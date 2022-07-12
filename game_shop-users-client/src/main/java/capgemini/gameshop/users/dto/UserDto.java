@@ -1,4 +1,4 @@
-package capgemini.gameshop.dto;
+package capgemini.gameshop.users.dto;
 
 import lombok.*;
 

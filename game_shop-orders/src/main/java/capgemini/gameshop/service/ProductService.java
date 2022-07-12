@@ -1,6 +1,6 @@
 package capgemini.gameshop.service;
 
-import capgemini.gameshop.dto.ProductDto;
+import capgemini.gameshop.orders.dto.ProductDto;
 import capgemini.gameshop.exception.ProductNotFoundException;
 import capgemini.gameshop.model.Attribute;
 import capgemini.gameshop.model.Category;

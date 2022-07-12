@@ -1,6 +1,6 @@
 package capgemini.gameshop.controller;
 
-import capgemini.gameshop.dto.UserDto;
+import capgemini.gameshop.users.dto.UserDto;
 import capgemini.gameshop.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,7 @@ public class UserRestControllerIntegrationTest {
 
         //when
         //then
-        mockMvc.perform(delete("/api/users/delete/" + userToDelete.getId()))
+        mockMvc.perform(delete("/api/users/" + userToDelete.getId()))
                 .andExpect(status().isNoContent());
     }
 }

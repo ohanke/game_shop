@@ -1,18 +1,22 @@
 package capgemini.gameshop.service;
 
-import capgemini.gameshop.dto.OrderDto;
+import capgemini.gameshop.orders.dto.OrderDto;
 import capgemini.gameshop.exception.DuplicateOrderingOfProductException;
 import capgemini.gameshop.exception.OrderNotFoundException;
 import capgemini.gameshop.exception.ProductNotFoundException;
 import capgemini.gameshop.model.Order;
 import capgemini.gameshop.model.OrderStatus;
 import capgemini.gameshop.model.Product;
+import capgemini.gameshop.orders.event.IntegrationEvent;
+import capgemini.gameshop.orders.event.OrderCreatedEvent;
 import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +33,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final KafkaTemplate<Long, IntegrationEvent> kafkaTemplate;
 
     private final ModelMapper mapper;
 
@@ -47,6 +52,7 @@ public class OrderService {
     }
 
     public OrderDto findById(Long id) {
+        kafkaTemplate.send("orders", 2L, new OrderCreatedEvent(1L, 2L, LocalDateTime.now()));
         return orderRepository.findById(id)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new OrderNotFoundException(id));
