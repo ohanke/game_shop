@@ -15,6 +15,6 @@ public class UserDeletedEvent implements IntegrationEvent {
 
     private Long userId;
 
-    private LocalDateTime lastModifiedAt;
+    //private LocalDateTime lastModifiedAt;
 
 }

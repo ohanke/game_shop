@@ -64,8 +64,7 @@ public class AdressService {
         AdressDto savedAdress = convertToDTO(adressRepository.save(mapper.map(adressDto, Adress.class)));
         kafkaTemplate.send("adresses", savedAdress.getId(),
                 new AdressCreatedEvent(savedAdress.getId(),
-                        savedAdress.getUserId(),
-                        savedAdress.getCreatedAt()));
+                        savedAdress.getUserId()));
         return savedAdress;
         }
 

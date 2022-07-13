@@ -3,6 +3,7 @@ package capgemini.gameshop.orders.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -28,6 +29,8 @@ public class OrderDto {
     private String orderStatus;
 
     private Set<ProductDto> products;
+
+    private LocalDateTime createdAt;
     
     public OrderDto(Long userId, double totalValue, String orderStatus) {
         this.id = null;

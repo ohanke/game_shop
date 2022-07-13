@@ -1,15 +1,14 @@
 package capgemini.gameshop.config;
 
+import capgemini.gameshop.orders.event.OrderCreatedEvent;
+import capgemini.gameshop.service.EmailService;
 import capgemini.gameshop.users.clients.AdressClient;
-import capgemini.gameshop.orders.clients.OrderClient;
 import capgemini.gameshop.users.clients.UserClient;
 import capgemini.gameshop.users.dto.AdressDto;
 import capgemini.gameshop.users.dto.UserDto;
 import capgemini.gameshop.users.event.AdressCreatedEvent;
-import capgemini.gameshop.orders.event.OrderCreatedEvent;
 import capgemini.gameshop.users.event.UserDeletedEvent;
 import capgemini.gameshop.users.event.UserRegisteredEvent;
-import capgemini.gameshop.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -24,32 +23,33 @@ public class NotificationListener {
     private final EmailService emailService;
 
     private final UserClient userClient;
-
-    private final OrderClient orderClient;
-
+//
+//    private final OrderClient orderClient;
+//
     private final AdressClient adressClient;
 
 
     @KafkaListener(topics = "orders", groupId = "notification")
     public void listen(@Payload OrderCreatedEvent event){
 
-        System.out.println(event.getCreatedAt());
+        System.out.println("test balablablabsalblabla: " + event.getOrderId());
 
     }
 
     @KafkaListener(topics = "users", groupId = "notification")
     public void listen(@Payload UserRegisteredEvent event){
 
+        //TODO - LocalDateTime feign.codec.DecodeException: Type definition error: [simple type, class java.time.LocalDateTime];
         UserDto user = userClient.getUserById(event.getUserId());
-        emailService.send(user.getEmail(), "Server", "Registration", "Congratulations! ");
+        emailService.send("user.getEmail()", "Server", "Registration", "Congratulations! ");
     }
-
-    @KafkaListener(topics = "users", groupId = "notification")
-    public void listen(@Payload UserDeletedEvent event){
-
-        UserDto user = userClient.getUserById(event.getUserId());
-        emailService.send(user.getEmail(), "Server", "Deletion of User", "User with mail: " + user.getEmail() + " is now deleted");
-    }
+        //TODO - topics - same topics for different event or new topic for every type of event??
+//    @KafkaListener(topics = "users", groupId = "notification")
+//    public void listen(@Payload UserDeletedEvent event){
+//
+//        UserDto user = userClient.getUserById(event.getUserId());
+//        emailService.send(user.getEmail(), "Server", "Deletion of User", "User with mail: " + user.getEmail() + " is now deleted");
+//    }
 
     @KafkaListener(topics = "adresses", groupId = "notification")
     public void listen(@Payload AdressCreatedEvent event){
