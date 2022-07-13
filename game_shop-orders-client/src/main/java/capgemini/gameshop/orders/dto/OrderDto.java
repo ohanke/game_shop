@@ -23,9 +23,7 @@ public class OrderDto {
     private Long id;
     @NotNull
     private Long userId;
-//    @Positive
     private double totalValue;
-//    @NotNull
     private String orderStatus;
 
     private Set<ProductDto> products;

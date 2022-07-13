@@ -1,5 +1,6 @@
 package capgemini.gameshop.config;
 
+import capgemini.gameshop.orders.clients.OrderClient;
 import capgemini.gameshop.orders.event.OrderCreatedEvent;
 import capgemini.gameshop.orders.event.OrderDeletedEvent;
 import capgemini.gameshop.orders.event.OrderAddProductEvent;
@@ -22,18 +23,15 @@ import org.springframework.stereotype.Component;
 public class NotificationListener {
 
     private final EmailService emailService;
-
     private final UserClient userClient;
-//
-//    private final OrderClient orderClient;
-//
+    private final OrderClient orderClient;
     private final AdressClient adressClient;
 
 
     @KafkaListener(topics = "orders-create", groupId = "order-creation")
     public void listen(@Payload OrderCreatedEvent event){
-        emailService.send(
-                event.getUserId().toString(),
+        String email = userClient.getUserById(event.getUserId()).getEmail();
+        emailService.send(email,
                 "Order Creation Listener",
                 "New Order",
                 "New order with id: " + event.getOrderId() + " was created");
@@ -41,8 +39,9 @@ public class NotificationListener {
 
     @KafkaListener(topics = "orders-extend", groupId = "order-addition")
     public void listen(@Payload OrderAddProductEvent event){
-        emailService.send(
-                event.getUserId().toString(),
+        String email = userClient.getUserById(event.getUserId()).getEmail();
+
+        emailService.send(email,
                 "Order Addition Listener",
                 "Added new Product",
                 "Product with id: " + event.getProductId() + " was added to order with id: " + event.getOrderId());
@@ -50,7 +49,8 @@ public class NotificationListener {
 
     @KafkaListener(topics = "orders-delete", groupId = "order-delete")
     public void listen(@Payload OrderDeletedEvent event){
-        emailService.send(event.getUserId().toString(),
+        String email = userClient.getUserById(event.getUserId()).getEmail();
+        emailService.send(email,
                 "Order Delete Listener",
                 "Order Deleted",
                 "Order with id: " + event.getOrderId() + " was deleted from your account");
@@ -58,17 +58,20 @@ public class NotificationListener {
 
     @KafkaListener(topics = "users-create", groupId = "user-creation")
     public void listen(@Payload UserRegisteredEvent event){
-        UserDto user = userClient.getUserById(event.getUserId());
-        emailService.send(
-                event.getUserId().toString(),
+        String email = userClient.getUserById(event.getUserId()).getEmail();
+        emailService.send(email,
                 "Users Creation Listener",
                 "Registration",
                 "Congratulations! Registration was successful ");
     }
+
+    //makes request on id that was deleted
+    //sounds problematic
+    //keep/modify or remove
     @KafkaListener(topics = "users-delete", groupId = "user-delete")
     public void listen(@Payload UserDeletedEvent event){
-        emailService.send(
-                event.getUserId().toString(),
+        String email = userClient.getUserById(event.getUserId()).getEmail();
+        emailService.send(email,
                 "User Delete Listener",
                 "Account Deleted",
                 "User with id: " + event.getUserId() + " was deleted");
@@ -76,7 +79,8 @@ public class NotificationListener {
 
     @KafkaListener(topics = "adresses-create", groupId = "adress-create")
     public void listen(@Payload AdressCreatedEvent event){
-        emailService.send(event.getUserId().toString(),
+        String email = userClient.getUserById(event.getUserId()).getEmail();
+        emailService.send(email,
                 "Adress Created Listener",
                 "Added Adress",
                 "Added new adress with id: " + event.getAdressId() + " for user with id: " + event.getUserId());

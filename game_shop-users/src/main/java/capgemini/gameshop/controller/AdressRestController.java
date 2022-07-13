@@ -35,7 +35,7 @@ public class AdressRestController {
 
     @PostMapping
     public AdressDto create(@Valid @RequestBody AdressDto adressDto){
-        return adressService.save(adressDto);
+        return adressService.create(adressDto);
     }
 
 
