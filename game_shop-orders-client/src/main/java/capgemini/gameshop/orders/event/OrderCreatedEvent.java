@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderCreatedEvent implements IntegrationEvent {
+public class OrderCreatedEvent implements IntegrationOrderEvent {
     private Long orderId;
 
     private Long userId;
 
-    private LocalDateTime createdAt;
+    //private LocalDateTime createdAt;
 }

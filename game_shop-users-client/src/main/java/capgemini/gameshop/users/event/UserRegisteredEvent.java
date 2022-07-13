@@ -15,6 +15,6 @@ public class UserRegisteredEvent implements IntegrationEvent {
 
     private Long userId;
 
-    private LocalDateTime createdAt;
+    //private LocalDateTime createdAt;
 
 }

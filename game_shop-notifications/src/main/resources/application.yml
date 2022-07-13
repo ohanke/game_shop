@@ -11,7 +11,7 @@ spring:
         spring.json.trusted.packages: "*"
       bootstrap-servers:
         - localhost:9092
-      key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
       group-id: app
       auto-offset-reset: earliest
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer

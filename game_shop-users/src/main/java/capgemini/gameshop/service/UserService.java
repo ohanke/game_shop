@@ -64,7 +64,7 @@ public class UserService {
      */
     public UserDto findById(Long id) {
         return userRepository.findById(id).map(this::convertToDTO).orElseThrow(() -> new UserNotFoundException(id));
-        //return mapper.map(user, UserDto.class);
+
     }
 
     /**
@@ -92,7 +92,7 @@ public class UserService {
             userDto.setCreatedAt(LocalDateTime.now());
             UserDto savedUser = convertToDTO(userRepository.save(mapper.map(userDto, User.class)));
             kafkaTemplate.send("users", savedUser.getId(),
-                    new UserRegisteredEvent(savedUser.getId(), savedUser.getCreatedAt()));
+                    new UserRegisteredEvent(savedUser.getId()));
             return savedUser;
         }
     }
@@ -135,7 +135,7 @@ public class UserService {
             user.setLastModifiedAt(LocalDateTime.now());
             userRepository.save(user);
             kafkaTemplate.send("users", user.getId(),
-                    new UserDeletedEvent(user.getId(), user.getLastModifiedAt()));
+                    new UserDeletedEvent(user.getId()));
         }
     }
 }

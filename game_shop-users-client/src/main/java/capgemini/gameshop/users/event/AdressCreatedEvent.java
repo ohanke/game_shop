@@ -17,5 +17,5 @@ public class AdressCreatedEvent implements IntegrationEvent {
 
     private Long userId;
 
-    private LocalDateTime createdAt;
+    //private LocalDateTime createdAt;
 }

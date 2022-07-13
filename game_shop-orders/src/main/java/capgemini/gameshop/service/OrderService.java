@@ -7,7 +7,7 @@ import capgemini.gameshop.exception.ProductNotFoundException;
 import capgemini.gameshop.model.Order;
 import capgemini.gameshop.model.OrderStatus;
 import capgemini.gameshop.model.Product;
-import capgemini.gameshop.orders.event.IntegrationEvent;
+import capgemini.gameshop.orders.event.IntegrationOrderEvent;
 import capgemini.gameshop.orders.event.OrderCreatedEvent;
 import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
@@ -33,7 +33,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    private final KafkaTemplate<Long, IntegrationEvent> kafkaTemplate;
+    private final KafkaTemplate<Long, IntegrationOrderEvent> kafkaTemplate;
 
     private final ModelMapper mapper;
 
@@ -52,7 +52,9 @@ public class OrderService {
     }
 
     public OrderDto findById(Long id) {
-        kafkaTemplate.send("orders", 2L, new OrderCreatedEvent(1L, 2L, LocalDateTime.now()));
+        OrderDto orderDto = mapper.map(orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id)), OrderDto.class);
+        kafkaTemplate.send("orders", orderDto.getId(),
+                new OrderCreatedEvent(orderDto.getId(), orderDto.getUserId()));
         return orderRepository.findById(id)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new OrderNotFoundException(id));
