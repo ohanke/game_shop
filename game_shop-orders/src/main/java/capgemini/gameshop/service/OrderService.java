@@ -9,6 +9,8 @@ import capgemini.gameshop.model.OrderStatus;
 import capgemini.gameshop.model.Product;
 import capgemini.gameshop.orders.event.IntegrationOrderEvent;
 import capgemini.gameshop.orders.event.OrderCreatedEvent;
+import capgemini.gameshop.orders.event.OrderDeletedEvent;
+import capgemini.gameshop.orders.event.OrderExtendedEvent;
 import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -52,9 +54,6 @@ public class OrderService {
     }
 
     public OrderDto findById(Long id) {
-        OrderDto orderDto = mapper.map(orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id)), OrderDto.class);
-        kafkaTemplate.send("orders", orderDto.getId(),
-                new OrderCreatedEvent(orderDto.getId(), orderDto.getUserId()));
         return orderRepository.findById(id)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new OrderNotFoundException(id));
@@ -64,6 +63,8 @@ public class OrderService {
         orderDto.setTotalValue(0);
         orderDto.setOrderStatus("NEW");
         Order savedOrder = orderRepository.save(convertToEntity(orderDto));
+        kafkaTemplate.send("orders-create", savedOrder.getId(),
+                new OrderCreatedEvent(savedOrder.getId(), savedOrder.getUserId()));
         return convertToDTO(savedOrder);
     }
 
@@ -84,6 +85,8 @@ public class OrderService {
             order.getProducts().add(product);
             order.setOrderStatus(OrderStatus.PROCESSING);
             order.setTotalValue(order.getTotalValueOfProducts());
+            kafkaTemplate.send("orders-extend", order.getId(),
+                    new OrderExtendedEvent(orderId, order.getUserId(), productId));
             return convertToDTO(orderRepository.save(order));
         }
     }
@@ -91,6 +94,8 @@ public class OrderService {
         Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
         existingOrder.getProducts().forEach(product -> product.getOrders().remove(existingOrder));
         productRepository.saveAll(existingOrder.getProducts());
+        kafkaTemplate.send("orders-delete", existingOrder.getId(),
+                new OrderDeletedEvent(existingOrder.getUserId(), existingOrder.getId()));
         orderRepository.deleteById(id);
     }
 

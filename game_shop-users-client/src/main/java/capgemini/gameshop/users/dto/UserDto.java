@@ -38,7 +38,7 @@ public class UserDto {
     @Size(min = 8, max = 32)
     private String password;
 
-    private LocalDateTime createdAt;
+//    private LocalDateTime createdAt;
 
 
     public UserDto(String firstName, String lastName, String email, String password) {
