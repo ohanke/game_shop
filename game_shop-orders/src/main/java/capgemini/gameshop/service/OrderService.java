@@ -10,7 +10,7 @@ import capgemini.gameshop.model.Product;
 import capgemini.gameshop.orders.event.IntegrationOrderEvent;
 import capgemini.gameshop.orders.event.OrderCreatedEvent;
 import capgemini.gameshop.orders.event.OrderDeletedEvent;
-import capgemini.gameshop.orders.event.OrderExtendedEvent;
+import capgemini.gameshop.orders.event.OrderAddProductEvent;
 import capgemini.gameshop.repository.OrderRepository;
 import capgemini.gameshop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,7 +85,7 @@ public class OrderService {
             order.setOrderStatus(OrderStatus.PROCESSING);
             order.setTotalValue(order.getTotalValueOfProducts());
             kafkaTemplate.send("orders-extend", order.getId(),
-                    new OrderExtendedEvent(orderId, order.getUserId(), productId));
+                    new OrderAddProductEvent(orderId, order.getUserId(), productId));
             return convertToDTO(orderRepository.save(order));
         }
     }

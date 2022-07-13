@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
     public void send(String to, String from, String title, String text){
 
-        log.info("Mail to: " + to + ". From: " + from + ". Title: " + title + ". Text: " + text);
+        log.info("Mail to: {}. From: {}. Title: {}. Text: {}", to, from, title, text);
 
     }
 }
