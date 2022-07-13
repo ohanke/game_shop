@@ -5,21 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 /**
- * This class represents the event of creating a new Order. Takes in:
+ * This class represents the event of adding Product to Order. Takes in:
  * orderId - id of the Order in which the event took place,
  * userId - id of the User who owns the Order,
+ * productId - id of the Product that has been added to the Order.
  */
-@Getter
+
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-public class OrderCreatedEvent implements IntegrationOrderEvent {
+@AllArgsConstructor
+public class OrderAddProductEvent implements IntegrationOrderEvent{
     private Long orderId;
-
     private Long userId;
-
-    //private LocalDateTime createdAt;
+    private Long productId;
 }
