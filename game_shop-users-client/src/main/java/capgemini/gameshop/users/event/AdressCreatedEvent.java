@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AdressCreatedEvent implements IntegrationEvent {
 
-    private Long id;
-
+    private Long adressId;
     private Long userId;
 
     //private LocalDateTime createdAt;

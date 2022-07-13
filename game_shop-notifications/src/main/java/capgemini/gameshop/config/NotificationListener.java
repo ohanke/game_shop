@@ -1,6 +1,8 @@
 package capgemini.gameshop.config;
 
 import capgemini.gameshop.orders.event.OrderCreatedEvent;
+import capgemini.gameshop.orders.event.OrderDeletedEvent;
+import capgemini.gameshop.orders.event.OrderExtendedEvent;
 import capgemini.gameshop.service.EmailService;
 import capgemini.gameshop.users.clients.AdressClient;
 import capgemini.gameshop.users.clients.UserClient;
@@ -29,36 +31,55 @@ public class NotificationListener {
     private final AdressClient adressClient;
 
 
-    @KafkaListener(topics = "orders", groupId = "notification")
+    @KafkaListener(topics = "orders-create", groupId = "order-creation")
     public void listen(@Payload OrderCreatedEvent event){
-
-        System.out.println("test balablablabsalblabla: " + event.getOrderId());
-
+        emailService.send(
+                "User with id: " + event.getUserId().toString(),
+                "Order Creation Listener",
+                "New Order",
+                "New order with id: " + event.getOrderId() + " was created");
     }
 
-    @KafkaListener(topics = "users", groupId = "notification")
+    @KafkaListener(topics = "orders-extend", groupId = "order-addition")
+    public void listen(@Payload OrderExtendedEvent event){
+        emailService.send(
+                "User with id: " + event.getUserId().toString(),
+                "Order Addition Listener",
+                "Added new Product",
+                "Product with id: " + event.getProductId() + " was added to order with id: " + event.getOrderId());
+    }
+
+    @KafkaListener(topics = "orders-delete", groupId = "order-delete")
+    public void listen(@Payload OrderDeletedEvent event){
+        emailService.send("User with id: " + event.getUserId().toString(),
+                "Order Delete Listener",
+                "Order Deleted",
+                "Order with id: " + event.getOrderId() + " was deleted from your account");
+    }
+
+    @KafkaListener(topics = "users-create", groupId = "user-creation")
     public void listen(@Payload UserRegisteredEvent event){
-
-        //TODO - LocalDateTime feign.codec.DecodeException: Type definition error: [simple type, class java.time.LocalDateTime];
         UserDto user = userClient.getUserById(event.getUserId());
-        emailService.send("user.getEmail()", "Server", "Registration", "Congratulations! ");
+        emailService.send(
+                "User with id: " + event.getUserId().toString(),
+                "Users Creation Listener",
+                "Registration",
+                "Congratulations! Registration was successful ");
     }
-        //TODO - topics - same topics for different event or new topic for every type of event??
-//    @KafkaListener(topics = "users", groupId = "notification")
-//    public void listen(@Payload UserDeletedEvent event){
-//
-//        UserDto user = userClient.getUserById(event.getUserId());
-//        emailService.send(user.getEmail(), "Server", "Deletion of User", "User with mail: " + user.getEmail() + " is now deleted");
-//    }
+    @KafkaListener(topics = "users-delete", groupId = "user-delete")
+    public void listen(@Payload UserDeletedEvent event){
+        emailService.send(
+                "User with id: " + event.getUserId().toString(),
+                "User Delete Listener",
+                "Account Deleted",
+                "User with id: " + event.getUserId() + " was deleted");
+    }
 
-    @KafkaListener(topics = "adresses", groupId = "notification")
+    @KafkaListener(topics = "adresses-create", groupId = "adress-create")
     public void listen(@Payload AdressCreatedEvent event){
-
-        AdressDto adress = adressClient.getAdress(event.getId());
-        UserDto user = userClient.getUserById(event.getUserId());
-        String message = "For user: " + user.getEmail() + " address has been added: " + adress.toString();
-
-        emailService.send(user.getEmail(), "Server", "New address", message);
+        emailService.send("User with id: " + event.getUserId().toString(),
+                "Adress Created Listener",
+                "Added Adress",
+                "Added new adress with id: " + event.getAdressId() + " for user with id: " + event.getUserId());
     }
-
 }

@@ -89,9 +89,9 @@ public class UserService {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new EmailExistException(userDto.getEmail());
         } else {
-            userDto.setCreatedAt(LocalDateTime.now());
+//            userDto.setCreatedAt(LocalDateTime.now());
             UserDto savedUser = convertToDTO(userRepository.save(mapper.map(userDto, User.class)));
-            kafkaTemplate.send("users", savedUser.getId(),
+            kafkaTemplate.send("users-create", savedUser.getId(),
                     new UserRegisteredEvent(savedUser.getId()));
             return savedUser;
         }
@@ -134,7 +134,7 @@ public class UserService {
             user.setActive(false);
             user.setLastModifiedAt(LocalDateTime.now());
             userRepository.save(user);
-            kafkaTemplate.send("users", user.getId(),
+            kafkaTemplate.send("users-delete", user.getId(),
                     new UserDeletedEvent(user.getId()));
         }
     }
