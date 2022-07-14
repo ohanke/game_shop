@@ -2,6 +2,7 @@ package capgemini.gameshop.service;
 
 import capgemini.gameshop.users.dto.AdressDto;
 import capgemini.gameshop.users.event.AdressCreatedEvent;
+import capgemini.gameshop.users.event.AdressDeletedEvent;
 import capgemini.gameshop.users.event.IntegrationEvent;
 import capgemini.gameshop.exception.AdressNotFoundException;
 import capgemini.gameshop.model.Adress;
@@ -74,9 +75,11 @@ public class AdressService {
     }
 
     public void delete(Long id) {
-        if (adressRepository.findById(id).isEmpty()) {
-            throw new AdressNotFoundException(id);
-        } else adressRepository.deleteById(id);
+        AdressDto adress = mapper.map(adressRepository.findById(id).orElseThrow(() -> new AdressNotFoundException(id)), AdressDto.class);
+        kafkaTemplate.send("adresses-delete", adress.getId(),
+                new AdressDeletedEvent(adress.getId(), adress.getUserId()));
+        adressRepository.deleteById(id);
+
     }
 
     private AdressDto updateFields(AdressDto adressDto, Adress adress) {
@@ -90,10 +93,4 @@ public class AdressService {
         }
 
 
-    public AdressDto save(AdressDto adressDto) {
-        Adress adressToSave = convertToEntity(adressDto);
-        adressToSave.setCreatedAt(LocalDateTime.now());
-        Adress savedAdress = adressRepository.save(adressToSave);
-        return convertToDTO(savedAdress);
-    }
 }
