@@ -3,6 +3,7 @@ package capgemini.gameshop.controller;
 import capgemini.gameshop.users.dto.AdressDto;
 import capgemini.gameshop.service.AdressService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,36 +17,37 @@ import java.util.List;
 public class AdressRestController {
 
     private final AdressService adressService;
+    private final CircuitBreakerFactory factory;
 
     @GetMapping
     public List<AdressDto> getAdresses(){
-        return adressService.findAll();
+        return factory.create("adressService").run(adressService::findAll);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public AdressDto getAdress(@PathVariable Long id) {
-        return adressService.findById(id);
+        return factory.create("adressService").run(() -> adressService.findById(id));
     }
 
-    @GetMapping(value= "/zip/{zip}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value= "zip/{zip}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AdressDto getAdressByZip(@PathVariable String zip) {
-        return adressService.findByZip(zip);
+        return factory.create("adressService").run(() -> adressService.findByZip(zip));
     }
 
 
     @PostMapping
     public AdressDto create(@Valid @RequestBody AdressDto adressDto){
-        return adressService.create(adressDto);
+        return factory.create("adressService").run(() -> adressService.create(adressDto));
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Long id,@Valid @RequestBody AdressDto adressDto){
         adressService.update(id, adressDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         adressService.delete(id);

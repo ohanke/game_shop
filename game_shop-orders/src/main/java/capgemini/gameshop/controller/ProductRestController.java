@@ -20,7 +20,8 @@ public class ProductRestController {
 
     @GetMapping()
     public List<ProductDto> getProducts(){
-        return productService.findAll();
+        return factory.create("productService").run(productService::findAll);
+//        return productService.findAll();
     }
 
     @GetMapping("{id}")
@@ -30,18 +31,20 @@ public class ProductRestController {
 
     @PostMapping()
     public ProductDto create(@Valid @RequestBody ProductDto productDto){
-        return productService.save(productDto);
+        return factory.create("productService").run(() -> productService.save(productDto));
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Long id,@Valid @RequestBody ProductDto productDto){
+//        factory.create("productService").run(() -> productService.update(id, productDto));
         productService.update(id, productDto);
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
+//        factory.create("productService").run(() -> productService.delete(id));
         productService.delete(id);
     }
 }
