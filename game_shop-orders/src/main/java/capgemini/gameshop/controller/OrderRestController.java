@@ -23,7 +23,7 @@ public class OrderRestController {
 
     @GetMapping
     public List<OrderDto> getOrders(){
-        return orderService.findAll();
+        return factory.create("orderService").run(orderService::findAll);
     }
 
     @GetMapping("{id}")
@@ -31,15 +31,9 @@ public class OrderRestController {
         return factory.create("orderService").run(() -> orderService.findById(id));
     }
 
-    private OrderDto getEmptyOrder(Throwable e) {
-        System.out.println(e.getMessage());
-        System.out.println(e.getCause());
-        return new OrderDto();
-    }
-
     @PostMapping
     public OrderDto create(@Valid @RequestBody OrderDto orderDto) {
-        return orderService.create(orderDto);
+        return factory.create("orderService").run(() -> orderService.create(orderDto));
     }
 
     @PutMapping("{id}")
@@ -56,6 +50,6 @@ public class OrderRestController {
 
     @GetMapping("{orderId}/add/{productId}")
     public OrderDto addProduct(@PathVariable Long orderId, @PathVariable Long productId){
-        return orderService.addProduct(orderId, productId);
+        return factory.create("orderService").run(() -> orderService.addProduct(orderId, productId));
     }
 }

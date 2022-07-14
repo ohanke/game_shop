@@ -3,6 +3,7 @@ package capgemini.gameshop.controller;
 import capgemini.gameshop.users.dto.UserDto;
 import capgemini.gameshop.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 public class UserRestController {
 
     private final UserService userService;
+    private final CircuitBreakerFactory factory;
 
 
     /**
@@ -25,7 +27,7 @@ public class UserRestController {
      */
     @GetMapping
     public List<UserDto> getUsers() {
-        return userService.findAll();
+        return factory.create("userService").run(userService::findAll);
     }
 
     /**
@@ -36,7 +38,7 @@ public class UserRestController {
      */
     @GetMapping(value = "/id/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserDto getUserById(@PathVariable Long id) {
-        return userService.findById(id);
+        return factory.create("userService").run(() -> userService.findById(id));
     }
 
     /**
@@ -47,7 +49,7 @@ public class UserRestController {
      */
     @GetMapping(value = "/email/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserDto getUserByMail(@PathVariable String email) {
-        return userService.findByEmail(email);
+        return factory.create("userService").run(() -> userService.findByEmail(email));
     }
 
     /**
@@ -58,7 +60,7 @@ public class UserRestController {
      */
     @PostMapping
     public UserDto create(@Valid @RequestBody UserDto userDto) {
-        return userService.create(userDto);
+        return factory.create("userService").run(() -> userService.create(userDto));
     }
 
     /**
@@ -70,7 +72,7 @@ public class UserRestController {
      */
     @PutMapping("/{id}")
     public UserDto update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
-        return userService.update(id, userDto);
+        return factory.create("userService").run(() -> userService.update(id, userDto));
     }
 
     /**
