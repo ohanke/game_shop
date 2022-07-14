@@ -38,6 +38,8 @@ public class UserDto {
     @Size(min = 8, max = 32)
     private String password;
 
+    private boolean active;
+
 //    private LocalDateTime createdAt;
 
 

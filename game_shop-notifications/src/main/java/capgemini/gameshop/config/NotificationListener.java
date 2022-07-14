@@ -7,8 +7,9 @@ import capgemini.gameshop.orders.event.OrderAddProductEvent;
 import capgemini.gameshop.service.EmailService;
 import capgemini.gameshop.users.clients.AdressClient;
 import capgemini.gameshop.users.clients.UserClient;
-import capgemini.gameshop.users.dto.UserDto;
+import capgemini.gameshop.users.dto.AdressDto;
 import capgemini.gameshop.users.event.AdressCreatedEvent;
+import capgemini.gameshop.users.event.AdressDeletedEvent;
 import capgemini.gameshop.users.event.UserDeletedEvent;
 import capgemini.gameshop.users.event.UserRegisteredEvent;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 
-//TODO - make it work with interface IntegrationEvent - Error with Deserialization
+
 @Component
 @RequiredArgsConstructor
 public class NotificationListener {
@@ -80,9 +81,20 @@ public class NotificationListener {
     @KafkaListener(topics = "adresses-create", groupId = "adress-create")
     public void listen(@Payload AdressCreatedEvent event){
         String email = userClient.getUserById(event.getUserId()).getEmail();
+        AdressDto adress = adressClient.getAdress(event.getAdressId());
+        var message = "For user with id: " + event.getUserId() + " added new adress: " + adress.toString();
         emailService.send(email,
                 "Adress Created Listener",
                 "Added Adress",
-                "Added new adress with id: " + event.getAdressId() + " for user with id: " + event.getUserId());
+                message);
+    }
+
+    @KafkaListener(topics = "adresses-delete", groupId = "adress-delete")
+    public void listen(@Payload AdressDeletedEvent event){
+        String email = userClient.getUserById(event.getUserId()).getEmail();
+        emailService.send(email,
+                "Adress Deleted Listener",
+                "Deleted Adress",
+                "Deleted adress with id: " + event.getAdressId() + " for user with id: " + event.getUserId());
     }
 }
