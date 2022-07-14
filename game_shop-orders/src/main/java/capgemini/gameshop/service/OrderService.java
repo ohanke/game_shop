@@ -18,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
  *  Returns DTO's of Order
  */
 @Service
+@Transactional
 @AllArgsConstructor
 public class OrderService {
 
