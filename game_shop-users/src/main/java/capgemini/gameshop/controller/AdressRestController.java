@@ -16,28 +16,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdressRestController {
 
+    private final String CIRCUIT_SERVICE = "adressService";
     private final AdressService adressService;
     private final CircuitBreakerFactory factory;
 
     @GetMapping
     public List<AdressDto> getAdresses(){
-        return factory.create("adressService").run(adressService::findAll);
+        return factory.create(CIRCUIT_SERVICE).run(adressService::findAll);
     }
 
     @GetMapping("{id}")
     public AdressDto getAdress(@PathVariable Long id) {
-        return factory.create("adressService").run(() -> adressService.findById(id));
+        return factory.create(CIRCUIT_SERVICE).run(() -> adressService.findById(id));
     }
 
     @GetMapping(value= "zip/{zip}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AdressDto getAdressByZip(@PathVariable String zip) {
-        return factory.create("adressService").run(() -> adressService.findByZip(zip));
+        return factory.create(CIRCUIT_SERVICE).run(() -> adressService.findByZip(zip));
     }
 
 
     @PostMapping
     public AdressDto create(@Valid @RequestBody AdressDto adressDto){
-        return factory.create("adressService").run(() -> adressService.create(adressDto));
+        return factory.create(CIRCUIT_SERVICE).run(() -> adressService.create(adressDto));
     }
 
 

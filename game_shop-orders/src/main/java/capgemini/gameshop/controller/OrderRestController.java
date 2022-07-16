@@ -18,38 +18,64 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderRestController {
 
+    private final String CIRCUIT_SERVICE = "orderService";
     private final OrderService orderService;
     private final CircuitBreakerFactory factory;
 
+
+    /**
+     * @return - list of all Orders converted to DTO
+     */
     @GetMapping
     public List<OrderDto> getOrders(){
-        return factory.create("orderService").run(orderService::findAll);
+        return factory.create(CIRCUIT_SERVICE).run(orderService::findAll);
     }
 
+    /**
+     * @param id - Long type id of Order object
+     * @return - OrderDTO with requested id
+     */
     @GetMapping("{id}")
     public OrderDto getOrder(@PathVariable Long id) {
-        return factory.create("orderService").run(() -> orderService.findById(id));
+        return factory.create(CIRCUIT_SERVICE).run(() -> orderService.findById(id));
     }
 
+
+    /**
+     * @param orderDto - body for new Order object
+     * @return - created OrderDTO
+     */
     @PostMapping
     public OrderDto create(@Valid @RequestBody OrderDto orderDto) {
-        return factory.create("orderService").run(() -> orderService.create(orderDto));
+        return factory.create(CIRCUIT_SERVICE).run(() -> orderService.create(orderDto));
     }
 
+    /**
+     * @param id - Long type id of Order to be updated
+     * @param orderDto - Body for OrderDTO update
+     */
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Long id, @Valid @RequestBody OrderDto orderDto) {
         orderService.update(id, orderDto);
     }
 
+    /**
+     * @param id - Long type id of OrderDTO to be deleted
+     */
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
         orderService.delete(id);
     }
 
+    /**
+     * @param orderId - Long type id of Order to be modified
+     * @param productId - Long type id of Product be added into Order
+     * @return - OrderDTO updated with specified Product
+     */
     @GetMapping("{orderId}/add/{productId}")
     public OrderDto addProduct(@PathVariable Long orderId, @PathVariable Long productId){
-        return factory.create("orderService").run(() -> orderService.addProduct(orderId, productId));
+        return factory.create(CIRCUIT_SERVICE).run(() -> orderService.addProduct(orderId, productId));
     }
 }
