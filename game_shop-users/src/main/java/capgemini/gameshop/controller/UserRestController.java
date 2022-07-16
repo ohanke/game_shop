@@ -16,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserRestController {
 
+    private final String CIRCUIT_SERVICE = "userService";
     private final UserService userService;
     private final CircuitBreakerFactory factory;
 
@@ -27,7 +28,7 @@ public class UserRestController {
      */
     @GetMapping
     public List<UserDto> getUsers() {
-        return factory.create("userService").run(userService::findAll);
+        return factory.create(CIRCUIT_SERVICE).run(userService::findAll);
     }
 
     /**
@@ -38,7 +39,7 @@ public class UserRestController {
      */
     @GetMapping(value = "/id/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserDto getUserById(@PathVariable Long id) {
-        return factory.create("userService").run(() -> userService.findById(id));
+        return factory.create(CIRCUIT_SERVICE).run(() -> userService.findById(id));
     }
 
     /**
@@ -49,7 +50,7 @@ public class UserRestController {
      */
     @GetMapping(value = "/email/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserDto getUserByMail(@PathVariable String email) {
-        return factory.create("userService").run(() -> userService.findByEmail(email));
+        return factory.create(CIRCUIT_SERVICE).run(() -> userService.findByEmail(email));
     }
 
     /**
@@ -60,7 +61,7 @@ public class UserRestController {
      */
     @PostMapping
     public UserDto create(@Valid @RequestBody UserDto userDto) {
-        return factory.create("userService").run(() -> userService.create(userDto));
+        return factory.create(CIRCUIT_SERVICE).run(() -> userService.create(userDto));
     }
 
     /**
@@ -72,7 +73,7 @@ public class UserRestController {
      */
     @PutMapping("/{id}")
     public UserDto update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
-        return factory.create("userService").run(() -> userService.update(id, userDto));
+        return factory.create(CIRCUIT_SERVICE).run(() -> userService.update(id, userDto));
     }
 
     /**

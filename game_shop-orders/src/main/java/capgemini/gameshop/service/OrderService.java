@@ -40,13 +40,25 @@ public class OrderService {
 
     private final ModelMapper mapper;
 
+    /**
+     * @param entity - Order object to be mapped
+     * @return - OrderDTO
+     */
     private OrderDto convertToDTO(Order entity) {
         return mapper.map(entity, OrderDto.class);
     }
 
+    /**
+     * @param dto - OrderDTO object to be mapped
+     * @return - Order
+     */
     private Order convertToEntity(OrderDto dto){
         return mapper.map(dto, Order.class);
     }
+
+    /**
+     * @return - List of all Orders converted to DTO
+     */
     public List<OrderDto> findAll(){
         return orderRepository.findAll()
                 .stream()
@@ -54,12 +66,20 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param id - Long type id of requested Order
+     * @return - OrderDTO with requested id
+     */
     public OrderDto findById(Long id) {
         return orderRepository.findById(id)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new OrderNotFoundException(id));
     }
 
+    /**
+     * @param orderDto - body for new Order object
+     * @return - created OrderDTO
+     */
     public OrderDto create(OrderDto orderDto) {
         orderDto.setTotalValue(0);
         orderDto.setOrderStatus("NEW");
@@ -69,12 +89,22 @@ public class OrderService {
         return convertToDTO(savedOrder);
     }
 
+
+    /**
+     * @param orderId - Long type id of Order to be updated
+     * @param orderDto - Body for OrderDTO update
+     */
     public void update(Long orderId, OrderDto orderDto) {
         orderRepository.findById(orderId)
                 .map(order -> updateFields(orderDto, order))
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
     }
 
+    /**
+     * @param orderId - Long type id of Order to be modified
+     * @param productId - Long type id of Product be added into Order
+     * @return - OrderDTO updated with specified Product
+     */
     public OrderDto addProduct(Long orderId, Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
