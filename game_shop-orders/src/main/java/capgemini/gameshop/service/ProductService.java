@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,8 +76,10 @@ public class ProductService {
 
     public ProductDto save(ProductDto productDto) {
         Product productToSave = converToEntity(productDto);
-        Product savedProduct = productRepository.save(productToSave);
-        return convertToDTO(savedProduct);
+        productToSave.setCreatedAt(LocalDateTime.now());
+        productToSave.setLastModifiedAt(LocalDateTime.now());
+        ProductDto savedProduct = convertToDTO(productRepository.save(productToSave));
+        return savedProduct;
     }
 
     public void update(Long id, ProductDto productDto) {
@@ -101,6 +104,7 @@ public class ProductService {
 
         }
         product.setPrice(productDto.getPrice());
+        product.setLastModifiedAt(LocalDateTime.now());
         return convertToDTO(productRepository.save(product));
     }
 }
