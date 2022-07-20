@@ -1,6 +1,5 @@
 package capgemini.gameshop.config;
 
-import capgemini.gameshop.orders.clients.OrderClient;
 import capgemini.gameshop.orders.event.OrderCreatedEvent;
 import capgemini.gameshop.orders.event.OrderDeletedEvent;
 import capgemini.gameshop.orders.event.OrderAddProductEvent;
@@ -25,7 +24,6 @@ public class NotificationListener {
 
     private final EmailService emailService;
     private final UserClient userClient;
-    private final OrderClient orderClient;
     private final AdressClient adressClient;
 
 
@@ -41,7 +39,6 @@ public class NotificationListener {
     @KafkaListener(topics = "orders-extend", groupId = "order-addition")
     public void listen(@Payload OrderAddProductEvent event){
         String email = userClient.getUserById(event.getUserId()).getEmail();
-
         emailService.send(email,
                 "Order Addition Listener",
                 "Added new Product",

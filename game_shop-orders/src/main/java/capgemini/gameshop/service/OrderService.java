@@ -19,6 +19,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,10 +84,13 @@ public class OrderService {
     public OrderDto create(OrderDto orderDto) {
         orderDto.setTotalValue(0);
         orderDto.setOrderStatus("NEW");
-        Order savedOrder = orderRepository.save(convertToEntity(orderDto));
+        Order order = mapper.map(orderDto, Order.class);
+        order.setCreatedAt(LocalDateTime.now());
+        order.setLastModifiedAt(LocalDateTime.now());
+        OrderDto savedOrder = convertToDTO(orderRepository.save(order));
         kafkaTemplate.send("orders-create", savedOrder.getId(),
                 new OrderCreatedEvent(savedOrder.getId(), savedOrder.getUserId()));
-        return convertToDTO(savedOrder);
+        return savedOrder;
     }
 
 
@@ -134,6 +138,7 @@ public class OrderService {
         order.setUserId(orderDto.getUserId());
         order.setTotalValue(orderDto.getTotalValue());
         order.setOrderStatus(OrderStatus.valueOf(orderDto.getOrderStatus()));
+        order.setLastModifiedAt(LocalDateTime.now());
         return convertToDTO(orderRepository.save(order));
     }
 }

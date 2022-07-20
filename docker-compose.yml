@@ -1,68 +1,122 @@
 version: '3.8'
 services:
-  db:
-    image: postgres
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: gameshopdb
-    ports:
-      - "5432:5432"
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: game
-    ports:
-      - "5050:80"
-  app:
-    image: 'docker-spring-boot-postgres:latest'
+  
+  user:
+    image: "users"
+    container_name: users
     build:
-      context: .
+      context: ./game_shop-users
       dockerfile: Dockerfile
-    container_name: app
     depends_on:
-      - db
+      - postgres
+      - eureka-server
+      - broker
+      - config-server
     environment:
-        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    stdin_open: true
-    tty: true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/users
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
+    ports:
+      - "8090:8090"
+    networks:
+      - spring
+      - postgres
 
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    hostname: broker
+  orders:
+    image: "orders"
+    container_name: orders
+    build:
+      context: ./game_shop-orders
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - eureka-server
+      - broker
+      - config-server
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/orders
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
+    ports:
+      - "9000:9000"
+    networks:
+      - spring
+      - postgres
+  
+  notifications:
+    image: "notifications"
+    container_name: notifications
+    build:
+      context: ./game_shop-notifications
+      dockerfile: Dockerfile
+    depends_on:
+      - eureka-server
+      - broker
+      - config-server
+    environment:
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
+    ports:
+      - "8085:8085"
+    networks:
+      - spring
+  
+  eureka-server:
+    image: "eureka-server"
+    container_name: eureka-server
+    build:
+      context: ./eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - spring
+  
+  config-server:
+    image: "config-server"
+    container_name: config-server
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    depends_on:
+      - eureka-server
+    ports:
+      - "8888:8888"
+    networks:
+      - postgres
+  
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    depends_on:
+      - eureka-server
+    networks:
+      - spring
+  
+  broker:
+    image: confluentinc/cp-kafka:7.0.1
     container_name: broker
     ports:
-      - "9092:9092"
-      - "9101:9101"
+      - 29092:29092
+    networks:
+      - spring
+    depends_on:
+      - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
-      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092'
-      KAFKA_PROCESS_ROLES: 'broker,controller'
-      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@broker:29093'
-      KAFKA_LISTENERS: 'PLAINTEXT://broker:29092,CONTROLLER://broker:29093,PLAINTEXT_HOST://0.0.0.0:9092'
-      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 3
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9101
-      KAFKA_JMX_HOSTNAME: localhost
-      KAFKA_NODE_ID: 1
-      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
-      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-    volumes:
-      - ./update_run.sh:/tmp/update_run.sh
-    command: "bash -c 'if [ ! -f /tmp/update_run.sh ]; then echo \"ERROR: Did you forget the update_run.sh file that came with this docker-compose.yml file?\" && exit 1 ; else /tmp/update_run.sh && /etc/confluent/docker/run ; fi'"
-
-  kowl:
-    image: quay.io/cloudhut/kowl:master
-    environment:
-      KAFKA_BROKERS: kafka:29092
-    ports:
-      - 8080:8080
+  
   akhq:
     image: tchiotludo/akhq
     environment:
@@ -71,7 +125,47 @@ services:
           connections:
             docker-kafka-server:
               properties:
-                bootstrap.servers: "kafka:29092"
+                bootstrap.servers: "broker:29092"
     ports:
-      - 8081:8080
-      - 28081:28081
+      - "1001:8080"
+      - "28081:28081"
+  
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+  pgadmin:
+    container_name: pageadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+networks:
+  postgres:
+    driver: bridge
+  spring:
+    driver: bridge
+    
+volumes:
+  postgres:
+  pgadmin:

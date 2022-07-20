@@ -61,12 +61,14 @@ public class AdressService {
     }
 
     public AdressDto create(AdressDto adressDto) {
-//        adressDto.setCreatedAt(LocalDateTime.now());
-        AdressDto savedAdress = convertToDTO(adressRepository.save(mapper.map(adressDto, Adress.class)));
+        Adress adress = mapper.map(adressDto, Adress.class);
+        adress.setCreatedAt(LocalDateTime.now());
+        adress.setLastModifiedAt(LocalDateTime.now());
+        AdressDto savedAdress = convertToDTO(adressRepository.save(adress));
         kafkaTemplate.send("adresses-create", savedAdress.getId(),
                 new AdressCreatedEvent(savedAdress.getId(), savedAdress.getUserId()));
         return savedAdress;
-        }
+    }
 
     public void update(Long id, AdressDto adressDto) {
         adressRepository.findById(id)
