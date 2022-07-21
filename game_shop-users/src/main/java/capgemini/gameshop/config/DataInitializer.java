@@ -64,7 +64,6 @@ public class DataInitializer {
                 .lastName(lastName)
                 .email(email)
                 .password(password)
-                .createdAt(LocalDateTime.now())
                 .active(true)
                 .build();
         userRepository.save(user);
@@ -88,7 +87,6 @@ public class DataInitializer {
                 .state(state)
                 .city(city)
                 .zip(zipCode)
-                .createdAt(LocalDateTime.now())
                 .build();
         adressRepository.save(adress);
     }

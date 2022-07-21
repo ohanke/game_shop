@@ -62,8 +62,6 @@ public class AdressService {
 
     public AdressDto create(AdressDto adressDto) {
         Adress adress = mapper.map(adressDto, Adress.class);
-        adress.setCreatedAt(LocalDateTime.now());
-        adress.setLastModifiedAt(LocalDateTime.now());
         AdressDto savedAdress = convertToDTO(adressRepository.save(adress));
         kafkaTemplate.send("adresses-create", savedAdress.getId(),
                 new AdressCreatedEvent(savedAdress.getId(), savedAdress.getUserId()));
@@ -90,7 +88,6 @@ public class AdressService {
             adress.setStreet(adressDto.getStreet());
             adress.setState(adressDto.getState());
             adress.setZip(adressDto.getZip());
-            adress.setLastModifiedAt(LocalDateTime.now());
             return convertToDTO(adressRepository.save(adress));
         }
 
