@@ -85,8 +85,6 @@ public class OrderService {
         orderDto.setTotalValue(0);
         orderDto.setOrderStatus("NEW");
         Order order = mapper.map(orderDto, Order.class);
-        order.setCreatedAt(LocalDateTime.now());
-        order.setLastModifiedAt(LocalDateTime.now());
         OrderDto savedOrder = convertToDTO(orderRepository.save(order));
         kafkaTemplate.send("orders-create", savedOrder.getId(),
                 new OrderCreatedEvent(savedOrder.getId(), savedOrder.getUserId()));
@@ -138,7 +136,6 @@ public class OrderService {
         order.setUserId(orderDto.getUserId());
         order.setTotalValue(orderDto.getTotalValue());
         order.setOrderStatus(OrderStatus.valueOf(orderDto.getOrderStatus()));
-        order.setLastModifiedAt(LocalDateTime.now());
         return convertToDTO(orderRepository.save(order));
     }
 }

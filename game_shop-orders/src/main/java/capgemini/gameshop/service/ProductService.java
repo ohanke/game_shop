@@ -76,10 +76,7 @@ public class ProductService {
 
     public ProductDto save(ProductDto productDto) {
         Product productToSave = converToEntity(productDto);
-        productToSave.setCreatedAt(LocalDateTime.now());
-        productToSave.setLastModifiedAt(LocalDateTime.now());
-        ProductDto savedProduct = convertToDTO(productRepository.save(productToSave));
-        return savedProduct;
+        return convertToDTO(productRepository.save(productToSave));
     }
 
     public void update(Long id, ProductDto productDto) {
@@ -104,7 +101,6 @@ public class ProductService {
 
         }
         product.setPrice(productDto.getPrice());
-        product.setLastModifiedAt(LocalDateTime.now());
         return convertToDTO(productRepository.save(product));
     }
 }

@@ -3,6 +3,7 @@ package capgemini.gameshop.model;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ import java.util.List;
 @Table(name = "users", indexes = {
         @Index(name = "users_fn_ln_index", columnList = "firstName, lastName"),
         @Index(name = "users_email_index", columnList = "email")})
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id

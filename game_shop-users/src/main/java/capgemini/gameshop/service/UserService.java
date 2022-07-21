@@ -90,7 +90,6 @@ public class UserService {
             throw new EmailExistException(userDto.getEmail());
         } else {
             User user = mapper.map(userDto, User.class);
-            user.setCreatedAt(LocalDateTime.now());
             UserDto savedUser = convertToDTO(userRepository.save(user));
             kafkaTemplate.send("users-create", savedUser.getId(),
                     new UserRegisteredEvent(savedUser.getId()));
@@ -117,7 +116,6 @@ public class UserService {
         existingUser.setFirstName(userDto.getFirstName());
         existingUser.setLastName(userDto.getLastName());
         existingUser.setPassword(userDto.getPassword());
-        existingUser.setLastModifiedAt(LocalDateTime.now());
         return convertToDTO(userRepository.save(existingUser));
     }
 
