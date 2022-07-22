@@ -22,3 +22,5 @@ spring:
       server:
         git:
           uri: https://github.com/ohanke/game-shop-config
+  zipkin:
+    base-url: http://zipkin:9411

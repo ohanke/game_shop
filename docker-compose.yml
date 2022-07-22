@@ -12,6 +12,7 @@ services:
       - eureka-server
       - broker
       - config-server
+      - zipkin
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/users
       - SPRING_DATASOURCE_USERNAME=root
@@ -35,6 +36,7 @@ services:
       - eureka-server
       - broker
       - config-server
+      - zipkin
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/orders
       - SPRING_DATASOURCE_USERNAME=root
@@ -57,6 +59,7 @@ services:
       - eureka-server
       - broker
       - config-server
+      - zipkin
     environment:
       - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
     ports:
@@ -73,6 +76,8 @@ services:
       - "8761:8761"
     networks:
       - spring
+    depends_on:
+      - zipkin
   
   config-server:
     image: "config-server"
@@ -82,6 +87,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - eureka-server
+      - zipkin
     ports:
       - "8888:8888"
     networks:
@@ -129,6 +135,14 @@ services:
     ports:
       - "1001:8080"
       - "28081:28081"
+  
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - spring
   
   postgres:
     container_name: postgres
