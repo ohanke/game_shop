@@ -1,6 +1,27 @@
 version: '3.8'
 services:
   
+  graphite:
+    image: graphiteapp/graphite-statsd
+    container_name: graphite
+    ports:
+      - 80:80
+      - 2003:2003
+      - 2004:2004
+      - 8125:8125
+    networks:
+      - spring
+    volumes:
+      - graphite:/graphite/storage
+  
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+  
   user:
     image: "users"
     container_name: users
@@ -13,6 +34,7 @@ services:
       - broker
       - config-server
       - zipkin
+      - graphite
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/users
       - SPRING_DATASOURCE_USERNAME=root
@@ -37,6 +59,7 @@ services:
       - broker
       - config-server
       - zipkin
+      - graphite
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/orders
       - SPRING_DATASOURCE_USERNAME=root
@@ -122,6 +145,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    restart: on-failure
   
   akhq:
     image: tchiotludo/akhq
@@ -183,3 +207,4 @@ networks:
 volumes:
   postgres:
   pgadmin:
+  graphite:
