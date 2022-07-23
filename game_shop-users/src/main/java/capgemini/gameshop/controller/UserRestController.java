@@ -2,6 +2,7 @@ package capgemini.gameshop.controller;
 
 import capgemini.gameshop.users.dto.UserDto;
 import capgemini.gameshop.service.UserService;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class UserRestController {
      * @return - list of user
      */
     @GetMapping
+    @Timed("users.all")
     public List<UserDto> getUsers() {
         return factory.create(CIRCUIT_SERVICE).run(userService::findAll);
     }
