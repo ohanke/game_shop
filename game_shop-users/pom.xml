@@ -11,10 +11,6 @@
 
     <artifactId>game_shop-users</artifactId>
 
-    <properties>
-        <maven.test.skip>true</maven.test.skip>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

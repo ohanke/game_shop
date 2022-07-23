@@ -1,37 +1,16 @@
 FROM maven:3-openjdk-18 as builder
 
-ENV HOME=/usr/app
+ENV HOME=/game_shop
 RUN mkdir -p $HOME
 WORKDIR $HOME
 
 COPY . $HOME
 
-RUN mvn clean install
-
-WORKDIR $HOME/eureka-server
-RUN mvn clean install spring-boot:repackage
-
-WORKDIR $HOME/config-server
-RUN mvn clean install spring-boot:repackage
-
-WORKDIR $HOME/game_shop-orders-client
-RUN mvn clean install
-
-WORKDIR $HOME/game_shop-users-client
-RUN mvn clean install
-
-WORKDIR $HOME/game_shop-notifications
-RUN mvn clean install spring-boot:repackage
-
-WORKDIR $HOME/game_shop-orders
-RUN mvn clean install spring-boot:repackage
-
-WORKDIR $HOME/game_shop-users
-RUN mvn clean install spring-boot:repackage
+RUN mvn clean install -DskipTests
 
 
 FROM openjdk:18-jdk-alpine
-ENV HOME=/usr/app
+ENV HOME=/game_shop
 RUN mkdir -p $HOME
 WORKDIR $HOME
 
