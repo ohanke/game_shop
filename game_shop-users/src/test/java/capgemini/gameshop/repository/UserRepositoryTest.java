@@ -20,15 +20,13 @@ class UserRepositoryTest {
     @DisplayName("Searching for users by eamil, success")
     public void findByEmail_emailExists_success() {
         User user = new User();
-        user.setFirstName("Ola");
-        user.setLastName("Plus");
+        user.setUsername("Ola");
         user.setEmail("po@op.pl");
         user.setPassword("asffsw");
         userRepository.save(user);
 
         User userOut = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException(user.getEmail()));
-        assertEquals(userOut.getFirstName(), user.getFirstName());
-        assertEquals(userOut.getLastName(), user.getLastName());
+        assertEquals(userOut.getUsername(), user.getUsername());
         assertEquals(userOut.getEmail(), user.getEmail());
     }
 

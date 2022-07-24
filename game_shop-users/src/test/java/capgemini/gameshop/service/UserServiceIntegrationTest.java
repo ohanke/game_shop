@@ -1,8 +1,8 @@
 package capgemini.gameshop.service;
 
-import capgemini.gameshop.users.dto.UserDto;
 import capgemini.gameshop.exception.EmailExistException;
 import capgemini.gameshop.exception.UserNotFoundException;
+import capgemini.gameshop.users.dto.UserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,13 @@ class UserServiceIntegrationTest {
     void findAll_success() {
         //given
         UserDto userDto = new UserDto();
-        userDto.setFirstName("Mike");
-        userDto.setLastName("Tyson");
+        userDto.setUsername("Mike");
+
         userDto.setEmail("mike@tyson.pl");
         userDto.setPassword("mike1256");
         userService.create(userDto);
 
-        userDto.setFirstName("Michael");
-        userDto.setLastName("Jordan");
+        userDto.setUsername("Michael");
         userDto.setEmail("mj@nba.com");
         userDto.setPassword("mj");
         userService.create(userDto);
@@ -104,8 +103,7 @@ class UserServiceIntegrationTest {
     void create_validUser_success() {
         //given
         UserDto userDto = new UserDto();
-        userDto.setFirstName("Mike");
-        userDto.setLastName("Tyson");
+        userDto.setUsername("Mike");
         userDto.setEmail("mike@tyson.pl");
         userDto.setPassword("mike1256");
 
@@ -137,8 +135,7 @@ class UserServiceIntegrationTest {
     void update_existingUserNoDataChange_success() {
         //given
         UserDto userDto = new UserDto();
-        userDto.setFirstName("Mike");
-        userDto.setLastName("Tyson");
+        userDto.setUsername("Mike");
         userDto.setEmail("mike@tyson.pl");
         userDto.setPassword("mike1256");
 
@@ -149,8 +146,7 @@ class UserServiceIntegrationTest {
 
         //then
         assertEquals(user.getId(), user2.getId());
-        assertEquals(user.getFirstName(), user2.getFirstName());
-        assertEquals(user.getLastName(), user2.getLastName());
+        assertEquals(user.getUsername(), user2.getUsername());
         assertEquals(user.getEmail(), user2.getEmail());
     }
 
@@ -159,14 +155,12 @@ class UserServiceIntegrationTest {
     void update_mailChange_mailExistsInOtherUser_throwsException() {
         //given
         UserDto user1 = new UserDto();
-        user1.setFirstName("Mike");
-        user1.setLastName("Tyson");
+        user1.setUsername("Mike");
         user1.setEmail("mike@tyson.pl");
         user1.setPassword("mike1256");
 
         UserDto user2 = new UserDto();
-        user2.setFirstName("Morgan");
-        user2.setLastName("Freeman");
+        user2.setUsername("Morgan");
         user2.setEmail("morg@free.com");
         user2.setPassword("mfgod");
 
@@ -187,8 +181,7 @@ class UserServiceIntegrationTest {
         Long id = 4L;
 
         UserDto userDto = new UserDto();
-        userDto.setFirstName("Indiana");
-        userDto.setLastName("Jones");
+        userDto.setUsername("Indiana");
         userDto.setEmail("indi@jones.com");
         userDto.setPassword("rock123");
         userService.create(userDto);

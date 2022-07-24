@@ -1,7 +1,7 @@
 package capgemini.gameshop.controller;
 
-import capgemini.gameshop.users.dto.UserDto;
 import capgemini.gameshop.service.UserService;
+import capgemini.gameshop.users.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -53,7 +53,7 @@ public class UserRestControllerIntegrationTest {
 
     @Test
     void create_validBody_success() throws Exception {
-        UserDto userToSave = new UserDto("Scottie", "Pippen", "scot@pipe.com", "123456789");
+        UserDto userToSave = new UserDto("Scottie", "scot@pipe.com", "123456789", "USER");
 
         mockMvc.perform(post("/api/users/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -65,7 +65,7 @@ public class UserRestControllerIntegrationTest {
     @Test
     void delete_validId_success() throws Exception {
         //given
-        UserDto userToDelete = userService.create(new UserDto("Scottie", "Men", "scot@pipe.com", "123456789"));
+        UserDto userToDelete = userService.create(new UserDto("Scottie", "scot@pipe.com", "123456789", "USER"));
 
         //when
         //then

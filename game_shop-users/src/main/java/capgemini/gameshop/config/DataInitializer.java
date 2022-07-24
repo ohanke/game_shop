@@ -3,14 +3,14 @@ package capgemini.gameshop.config;
 
 import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.model.Adress;
+import capgemini.gameshop.model.Roles;
 import capgemini.gameshop.model.User;
 import capgemini.gameshop.repository.AdressRepository;
 import capgemini.gameshop.repository.UserRepository;
+import capgemini.gameshop.security.PasswordEncoder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 /**
  * This object initialize data for database for testing porpoise
@@ -22,6 +22,8 @@ public class DataInitializer {
     private AdressRepository adressRepository;
     private UserRepository userRepository;
 
+    private PasswordEncoder passwordEncoder;
+
     /**
      * Data Initializing method.
      */
@@ -30,13 +32,13 @@ public class DataInitializer {
 
         //creating users and saving them to repository
 
-        createUser("Marian", "Kowalski", "marian@kowalski.com", "password");
-        createUser("Michał", "Tworuszka", "michal@tworuszka.com", "password1");
-        createUser("Oskar", "Hanke", "oskar@hanke.com", "password2");
-        createUser("Paweł", "Manowski", "pawel@manowski.com", "password3");
-        createUser("Janina", "Nowak", "janina@nowak.com", "password4");
-        createUser("Aleksandra", "Pietruszka", "ola@pietruszka.com", "password5");
-        createUser("Krzysztof", "Dudek", "kdudek@gmail.com", "password6");
+        createUser("Marian", "marian@kowalski.com", "password", Roles.USER);
+        createUser("Michał", "michal@tworuszka.com", "password1", Roles.ADMIN);
+        createUser("Oskar", "oskar@hanke.com", "password2", Roles.ADMIN);
+        createUser("Paweł", "pawel@manowski.com", "password3", Roles.ADMIN);
+        createUser("Janina", "janina@nowak.com", "password4", Roles.USER);
+        createUser("Aleksandra", "ola@pietruszka.com", "password5", Roles.USER);
+        createUser("Krzysztof", "kdudek@gmail.com", "password6", Roles.USER);
 
 
         //creating addresses and saving them to repository
@@ -53,18 +55,18 @@ public class DataInitializer {
 
     /**
      * Method to create user object and save it in user repository
-     * @param firstName - first name of user
-     * @param lastName - surname of user
+     * @param username - username of the user
      * @param email - unique user email adress
      * @param password - user's login password
      */
-    public void createUser(String firstName, String lastName, String email, String password){
+    public void createUser(String username, String email, String password, Roles role){
         User user = User.builder()
-                .firstName(firstName)
-                .lastName(lastName)
+                .username(username)
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.bCryptPasswordEncoder().encode(password))
+//                .password(password)
                 .active(true)
+                .role(role)
                 .build();
         userRepository.save(user);
     }
