@@ -3,8 +3,8 @@ package capgemini.gameshop.users.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 /**
  * DTO class for entities of User
@@ -24,11 +24,7 @@ public class UserDto {
 
     @NotEmpty
     @Size(min = 2)
-    private String firstName;
-
-    @NotEmpty
-    @Size(min = 2)
-    private String lastName;
+    private String username;
 
     @NotEmpty
     @Size(min = 5)
@@ -39,15 +35,17 @@ public class UserDto {
     private String password;
 
     private boolean active;
+    @NotNull
+    private String role;
 
 //    private LocalDateTime createdAt;
 
 
-    public UserDto(String firstName, String lastName, String email, String password) {
+    public UserDto(String username, String email, String password, String role) {
         this.id = null;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.username = username;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 }

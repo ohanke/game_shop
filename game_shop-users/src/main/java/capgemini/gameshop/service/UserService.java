@@ -1,16 +1,20 @@
 package capgemini.gameshop.service;
 
-import capgemini.gameshop.users.dto.UserDto;
-import capgemini.gameshop.users.event.IntegrationEvent;
-import capgemini.gameshop.users.event.UserDeletedEvent;
-import capgemini.gameshop.users.event.UserRegisteredEvent;
 import capgemini.gameshop.exception.EmailExistException;
 import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.model.User;
 import capgemini.gameshop.repository.UserRepository;
+import capgemini.gameshop.security.PasswordEncoder;
+import capgemini.gameshop.users.dto.UserDto;
+import capgemini.gameshop.users.event.IntegrationEvent;
+import capgemini.gameshop.users.event.UserDeletedEvent;
+import capgemini.gameshop.users.event.UserRegisteredEvent;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,13 +32,14 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     private final ModelMapper mapper;
 
     private final KafkaTemplate<Long, IntegrationEvent> kafkaTemplate;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Method that converts User object to UserDto object using ModelMapper
@@ -78,6 +83,11 @@ public class UserService {
         return mapper.map(user, UserDto.class);
     }
 
+    public UserDto findByUsername(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        return mapper.map(user, UserDto.class);
+    }
+
     /**
      * Method that maps UserDto object to User object and saves that in user repository. Method checks if email used to create new user is already used, if TRUE throws EmailExistException
      *
@@ -90,6 +100,7 @@ public class UserService {
             throw new EmailExistException(userDto.getEmail());
         } else {
             User user = mapper.map(userDto, User.class);
+            user.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
             UserDto savedUser = convertToDTO(userRepository.save(user));
             kafkaTemplate.send("users-create", savedUser.getId(),
                     new UserRegisteredEvent(savedUser.getId()));
@@ -113,8 +124,7 @@ public class UserService {
                 existingUser.setEmail(userDto.getEmail());
             }
         }
-        existingUser.setFirstName(userDto.getFirstName());
-        existingUser.setLastName(userDto.getLastName());
+        existingUser.setUsername(userDto.getUsername());
         existingUser.setPassword(userDto.getPassword());
         return convertToDTO(userRepository.save(existingUser));
     }
@@ -135,5 +145,15 @@ public class UserService {
             kafkaTemplate.send("users-delete", user.getId(),
                     new UserDeletedEvent(user.getId()));
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getAuthorities());
     }
 }

@@ -1,8 +1,8 @@
 package capgemini.gameshop.controller;
 
-import capgemini.gameshop.users.dto.UserDto;
 import capgemini.gameshop.exception.UserNotFoundException;
 import capgemini.gameshop.service.UserService;
+import capgemini.gameshop.users.dto.UserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -87,7 +87,7 @@ class UserRestControllerUnitTest {
     @Test
     @DisplayName("POST /api/users/create Creates user returns 201")
     public void post_createUser_success() throws Exception {
-        UserDto saveUser = new UserDto("Scottie", "Pippen", "scot@pipe.com", "123456789");
+        UserDto saveUser = new UserDto("Scottie", "scot@pipe.com", "123456789", "USER");
 
         Mockito.when(userService.create(any())).thenReturn(saveUser);
 
